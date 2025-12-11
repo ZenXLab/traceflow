@@ -10,39 +10,57 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>(() => {
-    if (typeof window !== "undefined") {
-      return (localStorage.getItem("theme") as Theme) || "system";
+function getInitialTheme(): Theme {
+  if (typeof window !== "undefined") {
+    const stored = localStorage.getItem("traceflow-theme");
+    if (stored === "dark" || stored === "light" || stored === "system") {
+      return stored;
     }
-    return "system";
+  }
+  return "dark"; // Default to dark theme
+}
+
+function getSystemTheme(): "dark" | "light" {
+  if (typeof window !== "undefined") {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  return "dark";
+}
+
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  const [theme, setThemeState] = useState<Theme>(getInitialTheme);
+  const [resolvedTheme, setResolvedTheme] = useState<"dark" | "light">(() => {
+    const initial = getInitialTheme();
+    return initial === "system" ? getSystemTheme() : initial;
   });
-  
-  const [resolvedTheme, setResolvedTheme] = useState<"dark" | "light">("dark");
 
   useEffect(() => {
     const root = document.documentElement;
-    
-    const getSystemTheme = (): "dark" | "light" => {
-      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    };
 
     const applyTheme = (newTheme: Theme) => {
       const resolved = newTheme === "system" ? getSystemTheme() : newTheme;
       setResolvedTheme(resolved);
       
+      // Remove existing theme classes
       root.classList.remove("light", "dark");
+      // Add new theme class
       root.classList.add(resolved);
       
+      // Update data attribute for additional styling hooks
+      root.setAttribute("data-theme", resolved);
+      
       // Update meta theme-color
-      const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-      if (metaThemeColor) {
-        metaThemeColor.setAttribute("content", resolved === "dark" ? "#0a0f1a" : "#ffffff");
+      let metaThemeColor = document.querySelector('meta[name="theme-color"]');
+      if (!metaThemeColor) {
+        metaThemeColor = document.createElement("meta");
+        metaThemeColor.setAttribute("name", "theme-color");
+        document.head.appendChild(metaThemeColor);
       }
+      metaThemeColor.setAttribute("content", resolved === "dark" ? "#0a0f1a" : "#f8fafc");
     };
 
     applyTheme(theme);
-    localStorage.setItem("theme", theme);
+    localStorage.setItem("traceflow-theme", theme);
 
     // Listen for system theme changes
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
