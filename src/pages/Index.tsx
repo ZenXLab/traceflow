@@ -17,6 +17,8 @@ import { EnhancedROICalculator } from "@/components/traceflow/EnhancedROICalcula
 import { PricingSection } from "@/components/traceflow/PricingSection";
 import { Footer } from "@/components/traceflow/Footer";
 import { ScrollProgress } from "@/components/traceflow/ScrollProgress";
+import { TechStackDiagram } from "@/components/traceflow/TechStackDiagram";
+import { ScrollReveal } from "@/hooks/use-scroll-animation";
 
 const Index = () => {
   useEffect(() => {
@@ -36,20 +38,51 @@ const Index = () => {
       <EnhancedNavigation />
       <main>
         <EnhancedHeroSection />
-        <EnhancedPipelineSection />
-        <VideoDemoSection />
-        <ModulesGrid />
-        <FeatureCategories />
-        <EnhancedIndustrySolutions />
-        <EnhancedWorldFirstFeatures />
-        <CompetitiveMatrix />
-        <EnhancedSecurityArchitecture />
-        <ProximaAI />
-        <StorySection />
-        <CaseStudies />
-        <Testimonials />
-        <EnhancedROICalculator />
-        <PricingSection />
+        <ScrollReveal animation="fade-up">
+          <EnhancedPipelineSection />
+        </ScrollReveal>
+        <ScrollReveal animation="fade-up" delay={100}>
+          <VideoDemoSection />
+        </ScrollReveal>
+        <ScrollReveal animation="fade-up" delay={100}>
+          <ModulesGrid />
+        </ScrollReveal>
+        <ScrollReveal animation="fade-up" delay={100}>
+          <FeatureCategories />
+        </ScrollReveal>
+        <ScrollReveal animation="fade-up" delay={100}>
+          <TechStackDiagram />
+        </ScrollReveal>
+        <ScrollReveal animation="fade-up" delay={100}>
+          <EnhancedIndustrySolutions />
+        </ScrollReveal>
+        <ScrollReveal animation="fade-up" delay={100}>
+          <EnhancedWorldFirstFeatures />
+        </ScrollReveal>
+        <ScrollReveal animation="fade-up" delay={100}>
+          <CompetitiveMatrix />
+        </ScrollReveal>
+        <ScrollReveal animation="fade-up" delay={100}>
+          <EnhancedSecurityArchitecture />
+        </ScrollReveal>
+        <ScrollReveal animation="fade-up" delay={100}>
+          <ProximaAI />
+        </ScrollReveal>
+        <ScrollReveal animation="fade-up" delay={100}>
+          <StorySection />
+        </ScrollReveal>
+        <ScrollReveal animation="fade-up" delay={100}>
+          <CaseStudies />
+        </ScrollReveal>
+        <ScrollReveal animation="fade-up" delay={100}>
+          <Testimonials />
+        </ScrollReveal>
+        <ScrollReveal animation="fade-up" delay={100}>
+          <EnhancedROICalculator />
+        </ScrollReveal>
+        <ScrollReveal animation="fade-up" delay={100}>
+          <PricingSection />
+        </ScrollReveal>
       </main>
       <Footer />
     </div>

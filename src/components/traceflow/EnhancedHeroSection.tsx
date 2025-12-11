@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Shield, Lock, Globe, Key, Fingerprint, Play, AlertTriangle, Zap, BarChart3, Brain, Ticket } from "lucide-react";
 import { cn } from "@/lib/utils";
+import heroBackground from "@/assets/hero-background.png";
 
 const trustBadges = [
   { icon: Shield, label: "SOC2 Type II" },
@@ -182,7 +183,14 @@ export function EnhancedHeroSection() {
 
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
-      {/* Background Elements */}
+      {/* Hero Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 dark:opacity-30"
+        style={{ backgroundImage: `url(${heroBackground})` }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
+      
+      {/* Canvas Animation */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full pointer-events-none"
