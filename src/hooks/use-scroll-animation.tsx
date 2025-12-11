@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, RefObject } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface UseScrollAnimationOptions {
   threshold?: number;
@@ -8,7 +8,7 @@ interface UseScrollAnimationOptions {
 
 export function useScrollAnimation<T extends HTMLElement = HTMLDivElement>(
   options: UseScrollAnimationOptions = {}
-): [RefObject<T>, boolean] {
+): [React.RefObject<T>, boolean] {
   const { threshold = 0.1, rootMargin = "0px 0px -50px 0px", triggerOnce = true } = options;
   const ref = useRef<T>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -40,7 +40,7 @@ export function useScrollAnimation<T extends HTMLElement = HTMLDivElement>(
 
 // Hook for staggered children animations
 export function useStaggeredAnimation(
-  parentRef: RefObject<HTMLElement>,
+  parentRef: React.RefObject<HTMLElement>,
   options: UseScrollAnimationOptions = {}
 ) {
   const { threshold = 0.1, rootMargin = "0px 0px -50px 0px" } = options;
@@ -85,7 +85,30 @@ export function ScrollReveal({
   duration = 600,
   once = true,
 }: ScrollRevealProps) {
-  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ triggerOnce: once });
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          if (once) {
+            observer.unobserve(element);
+          }
+        } else if (!once) {
+          setIsVisible(false);
+        }
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [once]);
 
   const animationStyles: Record<string, { initial: string; animate: string }> = {
     "fade-up": {

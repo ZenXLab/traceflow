@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Shield, Lock, Globe, Key, Fingerprint, Play, AlertTriangle, Zap, BarChart3, Brain, Ticket } from "lucide-react";
+import { Shield, Lock, Globe, Key, Fingerprint, Play, AlertTriangle, BarChart3, Brain, Ticket, MousePointer, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import heroBackground from "@/assets/hero-background.png";
 
@@ -12,16 +12,64 @@ const trustBadges = [
   { icon: Fingerprint, label: "Dual WebAuthn" },
 ];
 
+// Simulated session recording events
+const sessionEvents = [
+  { time: "0:00", type: "pageview", element: "Homepage", x: 50, y: 30 },
+  { time: "0:03", type: "click", element: "Products Menu", x: 25, y: 15 },
+  { time: "0:05", type: "scroll", element: "Product List", x: 50, y: 50 },
+  { time: "0:08", type: "click", element: "Add to Cart", x: 70, y: 65 },
+  { time: "0:12", type: "click", element: "Checkout", x: 85, y: 20 },
+  { time: "0:18", type: "input", element: "Email Field", x: 40, y: 40 },
+  { time: "0:23", type: "rage_click", element: "Submit Button", x: 60, y: 75 },
+  { time: "0:28", type: "error", element: "Form Validation", x: 60, y: 75 },
+];
+
 export function EnhancedHeroSection() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [currentEventIndex, setCurrentEventIndex] = useState(0);
+  const [cursorPosition, setCursorPosition] = useState({ x: 50, y: 30 });
+  const [sessionTime, setSessionTime] = useState(0);
+  const [showRageClick, setShowRageClick] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
   }, []);
 
-  // Enhanced particle animation with intelligence hub
+  // Simulate session recording playback
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSessionTime(prev => {
+        const next = (prev + 1) % 35;
+        return next;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Update cursor position based on session time
+  useEffect(() => {
+    const eventIndex = sessionEvents.findIndex((e, i) => {
+      const timeInSeconds = parseInt(e.time.split(':')[1]);
+      const nextEvent = sessionEvents[i + 1];
+      const nextTimeInSeconds = nextEvent ? parseInt(nextEvent.time.split(':')[1]) : 35;
+      return sessionTime >= timeInSeconds && sessionTime < nextTimeInSeconds;
+    });
+
+    if (eventIndex !== -1 && eventIndex !== currentEventIndex) {
+      setCurrentEventIndex(eventIndex);
+      const event = sessionEvents[eventIndex];
+      setCursorPosition({ x: event.x, y: event.y });
+      
+      if (event.type === "rage_click") {
+        setShowRageClick(true);
+        setTimeout(() => setShowRageClick(false), 2000);
+      }
+    }
+  }, [sessionTime, currentEventIndex]);
+
+  // Enhanced particle animation
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -45,8 +93,6 @@ export function EnhancedHeroSection() {
       radius: number;
       opacity: number;
       color: string;
-      targetX: number;
-      targetY: number;
       angle: number;
       orbitRadius: number;
       orbitSpeed: number;
@@ -57,7 +103,6 @@ export function EnhancedHeroSection() {
     const centerX = canvas.offsetWidth / 2;
     const centerY = canvas.offsetHeight / 2;
 
-    // Create orbiting particles
     for (let i = 0; i < 80; i++) {
       const angle = Math.random() * Math.PI * 2;
       const orbitRadius = 80 + Math.random() * 200;
@@ -69,8 +114,6 @@ export function EnhancedHeroSection() {
         radius: Math.random() * 2.5 + 0.5,
         opacity: Math.random() * 0.6 + 0.2,
         color: colors[Math.floor(Math.random() * colors.length)],
-        targetX: centerX,
-        targetY: centerY,
         angle,
         orbitRadius,
         orbitSpeed: (Math.random() - 0.5) * 0.01,
@@ -84,7 +127,6 @@ export function EnhancedHeroSection() {
       ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
       time += 0.01;
 
-      // Draw central intelligence hub
       const hubGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 60);
       hubGradient.addColorStop(0, "rgba(0, 194, 216, 0.4)");
       hubGradient.addColorStop(0.5, "rgba(11, 61, 145, 0.2)");
@@ -95,7 +137,6 @@ export function EnhancedHeroSection() {
       ctx.fillStyle = hubGradient;
       ctx.fill();
 
-      // Inner core
       const coreGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 25);
       coreGradient.addColorStop(0, "rgba(0, 194, 216, 0.8)");
       coreGradient.addColorStop(1, "rgba(11, 61, 145, 0.4)");
@@ -104,7 +145,6 @@ export function EnhancedHeroSection() {
       ctx.fillStyle = coreGradient;
       ctx.fill();
 
-      // Draw orbit rings
       [100, 150, 200].forEach((radius, i) => {
         ctx.beginPath();
         ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
@@ -113,12 +153,9 @@ export function EnhancedHeroSection() {
         ctx.stroke();
       });
 
-      // Update and draw particles
       particles.forEach((p, index) => {
-        // Update orbit angle
         p.angle += p.orbitSpeed;
         
-        // Some particles flow toward center
         if (index % 3 === 0) {
           const dx = centerX - p.x;
           const dy = centerY - p.y;
@@ -128,19 +165,16 @@ export function EnhancedHeroSection() {
             p.x += dx * 0.002;
             p.y += dy * 0.002;
           } else {
-            // Reset to outer edge
             p.angle = Math.random() * Math.PI * 2;
             p.orbitRadius = 200 + Math.random() * 100;
             p.x = centerX + Math.cos(p.angle) * p.orbitRadius;
             p.y = centerY + Math.sin(p.angle) * p.orbitRadius;
           }
         } else {
-          // Orbit around center
           p.x = centerX + Math.cos(p.angle) * p.orbitRadius;
           p.y = centerY + Math.sin(p.angle) * p.orbitRadius;
         }
 
-        // Draw connection to center
         const distance = Math.sqrt((centerX - p.x) ** 2 + (centerY - p.y) ** 2);
         if (distance < 180) {
           ctx.beginPath();
@@ -151,7 +185,6 @@ export function EnhancedHeroSection() {
           ctx.stroke();
         }
 
-        // Draw particle
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         ctx.fillStyle = p.color + Math.floor(p.opacity * 255).toString(16).padStart(2, "0");
@@ -168,7 +201,6 @@ export function EnhancedHeroSection() {
     };
   }, []);
 
-  // Magnetic button effect
   const handleMouseMove = (e: React.MouseEvent) => {
     const rect = e.currentTarget.getBoundingClientRect();
     setMousePos({
@@ -181,26 +213,34 @@ export function EnhancedHeroSection() {
     setMousePos({ x: 0, y: 0 });
   };
 
+  const currentEvent = sessionEvents[currentEventIndex];
+
   return (
-    <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+    <section 
+      className="relative min-h-screen flex items-center pt-20 overflow-hidden"
+      role="banner"
+      aria-labelledby="hero-title"
+    >
       {/* Hero Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 dark:opacity-30"
         style={{ backgroundImage: `url(${heroBackground})` }}
+        aria-hidden="true"
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" aria-hidden="true" />
       
       {/* Canvas Animation */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full pointer-events-none"
+        aria-hidden="true"
       />
-      <div className="absolute inset-0 bg-gradient-radial from-azure/10 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-gradient-radial from-azure/10 via-transparent to-transparent" aria-hidden="true" />
       
       {/* Ambient glow orbs */}
-      <div className="absolute top-1/4 -left-40 w-96 h-96 bg-azure/20 rounded-full blur-3xl animate-pulse-glow" />
-      <div className="absolute bottom-1/4 -right-40 w-96 h-96 bg-aqua/20 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: "1.5s" }} />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-azure/5 rounded-full blur-3xl" />
+      <div className="absolute top-1/4 -left-40 w-96 h-96 bg-azure/20 rounded-full blur-3xl animate-pulse-glow" aria-hidden="true" />
+      <div className="absolute bottom-1/4 -right-40 w-96 h-96 bg-aqua/20 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: "1.5s" }} aria-hidden="true" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-azure/5 rounded-full blur-3xl" aria-hidden="true" />
 
       <div className="container-wide relative z-10 px-4 lg:px-8 py-16 lg:py-24">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -210,8 +250,8 @@ export function EnhancedHeroSection() {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           )}>
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border-aqua/30">
-              <span className="relative flex h-2 w-2">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border-aqua/30" role="status">
+              <span className="relative flex h-2 w-2" aria-hidden="true">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-aqua opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-aqua"></span>
               </span>
@@ -220,14 +260,13 @@ export function EnhancedHeroSection() {
 
             {/* Title */}
             <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.1]">
+              <h1 id="hero-title" className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.1]">
                 <span className="block">TRACEFLOW —</span>
                 <span className="block mt-2 relative">
                   <span className="gradient-text animate-gradient bg-gradient-to-r from-azure via-aqua to-azure bg-[length:200%_auto]">
                     Digital Cognition
                   </span>
-                  {/* Glow underline */}
-                  <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-azure via-aqua to-transparent rounded-full opacity-50" />
+                  <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-azure via-aqua to-transparent rounded-full opacity-50" aria-hidden="true" />
                 </span>
                 <span className="block mt-2">Infrastructure</span>
               </h1>
@@ -239,7 +278,7 @@ export function EnhancedHeroSection() {
               </p>
 
               {/* Tagline */}
-              <p className="text-xl lg:text-2xl font-semibold">
+              <p className="text-xl lg:text-2xl font-semibold" aria-label="Tagline: Every Signal. One Intelligence.">
                 <span className="gradient-text-orange">"Every Signal.</span>
                 <span className="text-foreground"> One Intelligence."</span>
               </p>
@@ -250,6 +289,8 @@ export function EnhancedHeroSection() {
               className="flex flex-wrap gap-4"
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
+              role="group"
+              aria-label="Call to action buttons"
             >
               <Button 
                 variant="hero" 
@@ -259,27 +300,29 @@ export function EnhancedHeroSection() {
                   transform: `translate(${mousePos.x}px, ${mousePos.y}px)`,
                   transition: "transform 0.2s ease-out",
                 }}
+                aria-label="Request a demo of TRACEFLOW"
               >
-                <Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
+                <Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" aria-hidden="true" />
                 Request Demo
-                {/* Particle burst on hover */}
-                <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
                   <div className="absolute top-1/2 left-1/2 w-2 h-2 rounded-full bg-orange opacity-0 group-hover:animate-[burst_0.6s_ease-out_forwards]" />
                 </div>
               </Button>
               <Button 
                 variant="outline" 
                 size="xl"
-                className="border-border/50 hover:border-aqua/50"
+                className="border-border/50 hover:border-aqua/50 group"
+                aria-label="Explore the TRACEFLOW platform"
               >
                 Explore Platform
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
               </Button>
             </div>
 
             {/* Trust Badges */}
-            <div className="flex flex-wrap gap-3 pt-4">
+            <ul className="flex flex-wrap gap-3 pt-4" aria-label="Trust certifications">
               {trustBadges.map((badge, index) => (
-                <div
+                <li
                   key={badge.label}
                   className={cn(
                     "flex items-center gap-2 px-4 py-2.5 rounded-xl",
@@ -291,30 +334,34 @@ export function EnhancedHeroSection() {
                   )}
                   style={{ animationDelay: `${index * 100 + 500}ms` }}
                 >
-                  <badge.icon className="w-4 h-4 text-aqua" />
+                  <badge.icon className="w-4 h-4 text-aqua" aria-hidden="true" />
                   {badge.label}
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
 
-          {/* Right Content - Enhanced Dashboard Preview */}
-          <div className={cn(
-            "relative transition-all duration-1000 delay-300",
-            isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
-          )}>
+          {/* Right Content - Live Session Recording Preview */}
+          <div 
+            className={cn(
+              "relative transition-all duration-1000 delay-300",
+              isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
+            )}
+            role="img"
+            aria-label="Live session recording dashboard preview showing user analytics"
+          >
             <div className="relative perspective-1000">
               {/* Main Dashboard Card */}
               <div className="glass-strong rounded-2xl p-6 shadow-2xl hover:shadow-azure/20 transition-shadow duration-500 border border-border/50">
                 {/* Browser Chrome */}
                 <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3" aria-hidden="true">
                     <div className="w-3 h-3 rounded-full bg-destructive/70 hover:bg-destructive transition-colors"></div>
                     <div className="w-3 h-3 rounded-full bg-orange/70 hover:bg-orange transition-colors"></div>
                     <div className="w-3 h-3 rounded-full bg-aqua/70 hover:bg-aqua transition-colors"></div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="relative flex h-2 w-2">
+                    <span className="relative flex h-2 w-2" aria-hidden="true">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-aqua opacity-75"></span>
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-aqua"></span>
                     </span>
@@ -322,75 +369,162 @@ export function EnhancedHeroSection() {
                   </div>
                 </div>
 
-                {/* Session Recording Preview */}
+                {/* Session Recording Preview - Animated */}
                 <div className="bg-muted/20 rounded-xl p-4 mb-4 border border-border/30">
                   <div className="flex items-center gap-2 mb-3">
-                    <div className="relative flex h-2.5 w-2.5">
+                    <div className="relative flex h-2.5 w-2.5" aria-hidden="true">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-destructive opacity-75"></span>
                       <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-destructive"></span>
                     </div>
                     <span className="text-xs font-medium text-destructive">Recording Session #4821</span>
-                    <span className="ml-auto text-xs text-muted-foreground">2:34</span>
+                    <span className="ml-auto text-xs text-muted-foreground font-mono">
+                      0:{sessionTime.toString().padStart(2, '0')}
+                    </span>
                   </div>
-                  <div className="aspect-video bg-background/50 rounded-lg relative overflow-hidden border border-border/20">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-16 h-16 rounded-full bg-azure/20 flex items-center justify-center animate-pulse">
-                        <Play className="w-6 h-6 text-azure" />
-                      </div>
+                  
+                  {/* Simulated Website View */}
+                  <div className="aspect-video bg-gradient-to-br from-background via-muted/30 to-background rounded-lg relative overflow-hidden border border-border/20">
+                    {/* Fake website elements */}
+                    <div className="absolute top-2 left-2 right-2 h-6 bg-muted/40 rounded flex items-center px-2 gap-2">
+                      <div className="w-4 h-4 rounded bg-azure/30" />
+                      <div className="flex-1 h-2 bg-muted/60 rounded" />
                     </div>
-                    {/* Simulated cursor */}
-                    <div className="absolute w-4 h-4 rounded-full bg-aqua shadow-[0_0_10px_hsl(var(--aqua))] animate-[moveCursor_3s_ease-in-out_infinite]" 
-                         style={{ top: "40%", left: "30%" }} />
+                    
+                    {/* Navigation */}
+                    <div className="absolute top-10 left-2 right-2 flex gap-2">
+                      {[1, 2, 3, 4].map(i => (
+                        <div key={i} className="h-2 w-12 bg-muted/30 rounded" />
+                      ))}
+                    </div>
+                    
+                    {/* Content grid */}
+                    <div className="absolute top-16 left-2 right-2 bottom-8 grid grid-cols-3 gap-2">
+                      {[1, 2, 3, 4, 5, 6].map(i => (
+                        <div key={i} className="bg-muted/20 rounded flex flex-col gap-1 p-1">
+                          <div className="flex-1 bg-muted/30 rounded" />
+                          <div className="h-1 bg-muted/40 rounded w-3/4" />
+                        </div>
+                      ))}
+                    </div>
+                    
+                    {/* Submit button area */}
+                    <div className="absolute bottom-3 right-3 w-16 h-5 bg-azure/30 rounded flex items-center justify-center">
+                      <span className="text-[8px] text-azure">Submit</span>
+                    </div>
+                    
+                    {/* Animated Cursor */}
+                    <div 
+                      className={cn(
+                        "absolute transition-all duration-500 ease-out z-10",
+                        showRageClick && "animate-[rageClick_0.1s_ease-in-out_infinite]"
+                      )}
+                      style={{ 
+                        left: `${cursorPosition.x}%`, 
+                        top: `${cursorPosition.y}%`,
+                        transform: "translate(-50%, -50%)"
+                      }}
+                    >
+                      <MousePointer className="w-4 h-4 text-aqua drop-shadow-[0_0_8px_hsl(var(--aqua))]" />
+                      {/* Click ripple effect */}
+                      {currentEvent?.type === "click" && (
+                        <div className="absolute top-0 left-0 w-6 h-6 -translate-x-1/2 -translate-y-1/2 rounded-full bg-aqua/30 animate-ping" />
+                      )}
+                      {/* Rage click indicator */}
+                      {showRageClick && (
+                        <div className="absolute -top-6 left-1/2 -translate-x-1/2 px-2 py-1 bg-destructive/90 rounded text-[8px] text-destructive-foreground whitespace-nowrap">
+                          Rage Click!
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Heatmap overlay effect */}
+                    <div className="absolute bottom-3 right-3 w-20 h-8 bg-gradient-radial from-destructive/30 to-transparent rounded-full blur-md animate-pulse" />
+                    
+                    {/* Event indicator */}
+                    <div className="absolute bottom-1 left-1 px-2 py-0.5 bg-background/80 rounded text-[8px] text-muted-foreground backdrop-blur-sm">
+                      {currentEvent?.type}: {currentEvent?.element}
+                    </div>
+                    
                     {/* Progress bar */}
-                    <div className="absolute bottom-2 left-2 right-2 h-1 bg-muted rounded-full overflow-hidden">
-                      <div className="h-full w-2/3 bg-gradient-to-r from-azure to-aqua rounded-full animate-[pulse_2s_ease-in-out_infinite]"></div>
+                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-muted/50">
+                      <div 
+                        className="h-full bg-gradient-to-r from-azure to-aqua transition-all duration-1000"
+                        style={{ width: `${(sessionTime / 35) * 100}%` }}
+                      />
                     </div>
+                  </div>
+                  
+                  {/* Event timeline */}
+                  <div className="flex gap-1 mt-2 overflow-hidden">
+                    {sessionEvents.map((event, i) => (
+                      <div 
+                        key={i}
+                        className={cn(
+                          "flex-shrink-0 px-1.5 py-0.5 rounded text-[8px] transition-all duration-300",
+                          i === currentEventIndex 
+                            ? event.type === "rage_click" || event.type === "error"
+                              ? "bg-destructive/20 text-destructive"
+                              : "bg-aqua/20 text-aqua"
+                            : "bg-muted/30 text-muted-foreground"
+                        )}
+                      >
+                        {event.type === "rage_click" ? "rage" : event.type}
+                      </div>
+                    ))}
                   </div>
                 </div>
 
                 {/* PROXIMA AI Card */}
                 <div className="bg-gradient-to-r from-azure/10 to-aqua/10 rounded-xl p-4 mb-4 border border-azure/20">
                   <div className="flex items-center gap-2 mb-2">
-                    <Brain className="w-4 h-4 text-aqua" />
+                    <Brain className="w-4 h-4 text-aqua" aria-hidden="true" />
                     <span className="text-sm font-semibold">PROXIMA AI Analysis</span>
-                    <span className="ml-auto px-2 py-0.5 rounded text-xs bg-aqua/20 text-aqua">Processing</span>
+                    <span className="ml-auto px-2 py-0.5 rounded text-xs bg-aqua/20 text-aqua animate-pulse">Processing</span>
                   </div>
                   <p className="text-xs text-muted-foreground mb-3">
                     Detected <span className="text-destructive font-medium">3 friction points</span> in checkout flow. 
                     Estimated revenue impact: <span className="text-orange font-medium">$12,400/day</span>
                   </p>
                   <div className="flex gap-2">
-                    <span className="px-2.5 py-1 text-xs rounded-lg bg-aqua/20 text-aqua flex items-center gap-1">
-                      <Ticket className="w-3 h-3" />
+                    <span className="px-2.5 py-1 text-xs rounded-lg bg-aqua/20 text-aqua flex items-center gap-1 cursor-pointer hover:bg-aqua/30 transition-colors">
+                      <Ticket className="w-3 h-3" aria-hidden="true" />
                       Auto-Ticket
                     </span>
-                    <span className="px-2.5 py-1 text-xs rounded-lg bg-azure/20 text-azure">View Details</span>
+                    <span className="px-2.5 py-1 text-xs rounded-lg bg-azure/20 text-azure cursor-pointer hover:bg-azure/30 transition-colors">View Details</span>
                   </div>
                 </div>
 
                 {/* Rage Click Detection */}
-                <div className="flex items-center gap-3 p-3 bg-destructive/10 rounded-xl border border-destructive/20">
-                  <AlertTriangle className="w-5 h-5 text-destructive animate-bounce-subtle" />
+                <div className={cn(
+                  "flex items-center gap-3 p-3 rounded-xl border transition-all duration-300",
+                  showRageClick 
+                    ? "bg-destructive/20 border-destructive/40 animate-pulse" 
+                    : "bg-destructive/10 border-destructive/20"
+                )}>
+                  <AlertTriangle className={cn(
+                    "w-5 h-5 text-destructive",
+                    showRageClick && "animate-bounce"
+                  )} aria-hidden="true" />
                   <div className="flex-1">
                     <p className="text-sm font-medium">Rage Click Detected</p>
                     <p className="text-xs text-muted-foreground">Submit button - 23 rapid clicks in 4s</p>
                   </div>
-                  <BarChart3 className="w-5 h-5 text-muted-foreground" />
+                  <BarChart3 className="w-5 h-5 text-muted-foreground" aria-hidden="true" />
                 </div>
               </div>
 
               {/* Floating Stats Cards */}
-              <div className="absolute -top-6 -right-6 glass rounded-xl p-4 animate-float shadow-xl border border-border/50">
+              <div className="absolute -top-6 -right-6 glass rounded-xl p-4 animate-float shadow-xl border border-border/50" aria-label="1.2 billion events per day">
                 <div className="text-2xl font-bold gradient-text">1.2B+</div>
                 <div className="text-xs text-muted-foreground">Events/Day</div>
               </div>
               
-              <div className="absolute -bottom-4 -left-4 glass rounded-xl p-4 animate-float shadow-xl border border-border/50" style={{ animationDelay: "1s" }}>
+              <div className="absolute -bottom-4 -left-4 glass rounded-xl p-4 animate-float shadow-xl border border-border/50" style={{ animationDelay: "1s" }} aria-label="23 milliseconds P99 latency">
                 <div className="text-2xl font-bold text-aqua">23ms</div>
                 <div className="text-xs text-muted-foreground">P99 Latency</div>
               </div>
 
-              <div className="absolute top-1/2 -right-8 glass rounded-xl p-3 animate-float shadow-xl border border-border/50" style={{ animationDelay: "0.5s" }}>
+              <div className="absolute top-1/2 -right-8 glass rounded-xl p-3 animate-float shadow-xl border border-border/50" style={{ animationDelay: "0.5s" }} aria-label="99.99% uptime">
                 <div className="text-lg font-bold text-orange">99.99%</div>
                 <div className="text-xs text-muted-foreground">Uptime</div>
               </div>
@@ -400,7 +534,11 @@ export function EnhancedHeroSection() {
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce-subtle">
+      <div 
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce-subtle"
+        role="presentation"
+        aria-hidden="true"
+      >
         <span className="text-xs text-muted-foreground">Scroll to explore</span>
         <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex justify-center pt-2">
           <div className="w-1.5 h-3 rounded-full bg-aqua animate-bounce"></div>
@@ -417,6 +555,25 @@ export function EnhancedHeroSection() {
         @keyframes burst {
           0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
           100% { transform: translate(-50%, -50%) scale(20); opacity: 0; }
+        }
+        @keyframes rageClick {
+          0%, 100% { transform: translate(-50%, -50%) scale(1); }
+          50% { transform: translate(-50%, -50%) scale(1.2); }
+        }
+        @keyframes bounce-subtle {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-5px); }
+        }
+        @keyframes fade-in-up {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-bounce-subtle {
+          animation: bounce-subtle 2s ease-in-out infinite;
+        }
+        .animate-fade-in-up {
+          animation: fade-in-up 0.6s ease-out forwards;
+          opacity: 0;
         }
       `}</style>
     </section>

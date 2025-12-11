@@ -18,14 +18,11 @@ import { PricingSection } from "@/components/traceflow/PricingSection";
 import { Footer } from "@/components/traceflow/Footer";
 import { ScrollProgress } from "@/components/traceflow/ScrollProgress";
 import { TechStackDiagram } from "@/components/traceflow/TechStackDiagram";
-import { ScrollReveal } from "@/hooks/use-scroll-animation";
 
 const Index = () => {
   useEffect(() => {
-    // Update page title and meta
     document.title = "TRACEFLOW — Digital Cognition Infrastructure | Every Signal. One Intelligence.";
     
-    // Update meta description
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute("content", "TRACEFLOW is the world's first Digital Cognition Infrastructure by CropXon Innovations. Unify clickstream, observability, and multimodal feedback into a Zero-Trust, Hybrid-Ready Intelligence Layer.");
@@ -34,55 +31,31 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-lg"
+      >
+        Skip to main content
+      </a>
       <ScrollProgress />
       <EnhancedNavigation />
-      <main>
+      <main id="main-content" role="main">
         <EnhancedHeroSection />
-        <ScrollReveal animation="fade-up">
-          <EnhancedPipelineSection />
-        </ScrollReveal>
-        <ScrollReveal animation="fade-up" delay={100}>
-          <VideoDemoSection />
-        </ScrollReveal>
-        <ScrollReveal animation="fade-up" delay={100}>
-          <ModulesGrid />
-        </ScrollReveal>
-        <ScrollReveal animation="fade-up" delay={100}>
-          <FeatureCategories />
-        </ScrollReveal>
-        <ScrollReveal animation="fade-up" delay={100}>
-          <TechStackDiagram />
-        </ScrollReveal>
-        <ScrollReveal animation="fade-up" delay={100}>
-          <EnhancedIndustrySolutions />
-        </ScrollReveal>
-        <ScrollReveal animation="fade-up" delay={100}>
-          <EnhancedWorldFirstFeatures />
-        </ScrollReveal>
-        <ScrollReveal animation="fade-up" delay={100}>
-          <CompetitiveMatrix />
-        </ScrollReveal>
-        <ScrollReveal animation="fade-up" delay={100}>
-          <EnhancedSecurityArchitecture />
-        </ScrollReveal>
-        <ScrollReveal animation="fade-up" delay={100}>
-          <ProximaAI />
-        </ScrollReveal>
-        <ScrollReveal animation="fade-up" delay={100}>
-          <StorySection />
-        </ScrollReveal>
-        <ScrollReveal animation="fade-up" delay={100}>
-          <CaseStudies />
-        </ScrollReveal>
-        <ScrollReveal animation="fade-up" delay={100}>
-          <Testimonials />
-        </ScrollReveal>
-        <ScrollReveal animation="fade-up" delay={100}>
-          <EnhancedROICalculator />
-        </ScrollReveal>
-        <ScrollReveal animation="fade-up" delay={100}>
-          <PricingSection />
-        </ScrollReveal>
+        <EnhancedPipelineSection />
+        <VideoDemoSection />
+        <ModulesGrid />
+        <FeatureCategories />
+        <TechStackDiagram />
+        <EnhancedIndustrySolutions />
+        <EnhancedWorldFirstFeatures />
+        <CompetitiveMatrix />
+        <EnhancedSecurityArchitecture />
+        <ProximaAI />
+        <StorySection />
+        <CaseStudies />
+        <Testimonials />
+        <EnhancedROICalculator />
+        <PricingSection />
       </main>
       <Footer />
     </div>
