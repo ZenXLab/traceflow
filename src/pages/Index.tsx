@@ -41,69 +41,87 @@ const Index = () => {
       </a>
       <ScrollProgress />
       <EnhancedNavigation />
-      <main id="main-content" role="main">
+      
+      <main id="main-content" role="main" className="space-y-0">
+        {/* Hero - No animation, loads immediately */}
         <EnhancedHeroSection />
         
-        <ScrollReveal direction="up">
+        {/* Pipeline - slides up */}
+        <ScrollReveal direction="up" duration={700}>
           <EnhancedPipelineSection />
         </ScrollReveal>
         
-        <ScrollReveal direction="up" delay={100}>
+        {/* Demo - slides from right */}
+        <ScrollReveal direction="right" duration={700}>
           <VideoDemoSection />
         </ScrollReveal>
         
-        <ScrollReveal direction="up">
+        {/* Modules - slides up */}
+        <ScrollReveal direction="up" duration={600}>
           <ModulesGrid />
         </ScrollReveal>
         
-        <ScrollReveal direction="up">
+        {/* Features - slides from left */}
+        <ScrollReveal direction="left" duration={700}>
           <FeatureCategories />
         </ScrollReveal>
         
-        <ScrollReveal direction="up">
+        {/* Tech Stack - fade in */}
+        <ScrollReveal direction="fade" duration={800}>
           <TechStackDiagram />
         </ScrollReveal>
         
-        <ScrollReveal direction="up">
+        {/* Industries - slides from right */}
+        <ScrollReveal direction="right" duration={700}>
           <EnhancedIndustrySolutions />
         </ScrollReveal>
         
-        <ScrollReveal direction="up">
+        {/* World First - slides up */}
+        <ScrollReveal direction="up" duration={700}>
           <EnhancedWorldFirstFeatures />
         </ScrollReveal>
         
-        <ScrollReveal direction="up">
+        {/* Competitive - slides from left */}
+        <ScrollReveal direction="left" duration={700}>
           <CompetitiveMatrix />
         </ScrollReveal>
         
-        <ScrollReveal direction="up">
+        {/* Security - slides up */}
+        <ScrollReveal direction="up" duration={700}>
           <EnhancedSecurityArchitecture />
         </ScrollReveal>
         
-        <ScrollReveal direction="up">
+        {/* Proxima AI - fade in */}
+        <ScrollReveal direction="fade" duration={800}>
           <ProximaAI />
         </ScrollReveal>
         
-        <ScrollReveal direction="up">
+        {/* Story - slides from right */}
+        <ScrollReveal direction="right" duration={700}>
           <StorySection />
         </ScrollReveal>
         
-        <ScrollReveal direction="up">
+        {/* Case Studies - slides up */}
+        <ScrollReveal direction="up" duration={600}>
           <CaseStudies />
         </ScrollReveal>
         
-        <ScrollReveal direction="up">
+        {/* Testimonials - slides from left */}
+        <ScrollReveal direction="left" duration={700}>
           <Testimonials />
         </ScrollReveal>
         
-        <ScrollReveal direction="up">
+        {/* ROI Calculator - slides up */}
+        <ScrollReveal direction="up" duration={700}>
           <EnhancedROICalculator />
         </ScrollReveal>
         
-        <ScrollReveal direction="up">
+        {/* Pricing - fade in */}
+        <ScrollReveal direction="fade" duration={800}>
           <PricingSection />
         </ScrollReveal>
       </main>
+      
       <Footer />
       <OnboardingTour />
     </div>
