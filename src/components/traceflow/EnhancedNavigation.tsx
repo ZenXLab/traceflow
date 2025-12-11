@@ -3,6 +3,7 @@ import { Menu, X, Crown, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { TraceflowMegaMenu } from "./TraceflowMegaMenu";
+import { ThemeToggle } from "./ThemeToggle";
 
 const navLinks = [
   { label: "Features", href: "#features", hasMegaMenu: true },
@@ -106,6 +107,7 @@ export function EnhancedNavigation() {
 
         {/* Desktop CTAs */}
         <div className="hidden lg:flex items-center gap-3">
+          <ThemeToggle />
           <Button variant="ghost-light" size="sm">
             Sign In
           </Button>
@@ -163,6 +165,10 @@ export function EnhancedNavigation() {
             </a>
           ))}
           <div className="flex flex-col gap-3 mt-4 pt-4 border-t border-border">
+            <div className="flex items-center justify-between px-4 py-2">
+              <span className="text-sm text-muted-foreground">Theme</span>
+              <ThemeToggle />
+            </div>
             <Button variant="outline" size="lg" className="w-full">
               Sign In
             </Button>
