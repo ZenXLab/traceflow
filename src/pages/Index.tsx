@@ -18,6 +18,7 @@ import { PricingSection } from "@/components/traceflow/PricingSection";
 import { Footer } from "@/components/traceflow/Footer";
 import { ScrollProgress } from "@/components/traceflow/ScrollProgress";
 import { TechStackDiagram } from "@/components/traceflow/TechStackDiagram";
+import { OnboardingTour } from "@/components/traceflow/OnboardingTour";
 
 const Index = () => {
   useEffect(() => {
