@@ -15,94 +15,62 @@ import {
 import { Button } from "@/components/ui/button";
 
 interface TourStep {
-  target: string;
   title: string;
   description: string;
   icon: React.ElementType;
-  position: "top" | "bottom" | "left" | "right" | "center";
+  highlight: string;
 }
 
 const tourSteps: TourStep[] = [
   {
-    target: "#hero-title",
     title: "Welcome to TRACEFLOW",
     description: "The world's first Digital Cognition Infrastructure. Unify all your digital experience data into one intelligent platform.",
     icon: Sparkles,
-    position: "bottom",
+    highlight: "hero",
   },
   {
-    target: "#demo",
     title: "See It In Action",
     description: "Watch real session replays, AI analysis, heatmaps, and automatic ticket creation - all powered by PROXIMA AI.",
     icon: Play,
-    position: "top",
+    highlight: "demo",
   },
   {
-    target: "#proxima",
     title: "PROXIMA AI Engine",
     description: "Six specialized AI agents work together to analyze sessions, map journeys, find root causes, and auto-generate tickets.",
     icon: Brain,
-    position: "top",
+    highlight: "proxima",
   },
   {
-    target: "#security",
     title: "Enterprise-Grade Security",
     description: "Zero-PII ingestion, customer-managed keys, SOC2 compliance, and hybrid/air-gapped deployment options.",
     icon: Shield,
-    position: "top",
+    highlight: "security",
   },
   {
-    target: "#roi-calculator",
     title: "Calculate Your ROI",
     description: "See how much you can save with TRACEFLOW. Input your current costs and get instant ROI projections.",
     icon: BarChart3,
-    position: "top",
+    highlight: "roi",
   },
 ];
 
 export function OnboardingTour() {
   const [isVisible, setIsVisible] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
-  const [targetRect, setTargetRect] = useState<DOMRect | null>(null);
   const [hasSeenTour, setHasSeenTour] = useState(false);
 
   // Check if user has seen the tour
   useEffect(() => {
     const seen = localStorage.getItem("traceflow-tour-seen");
     if (!seen) {
-      // Delay showing tour to let page load
       const timer = setTimeout(() => {
         setIsVisible(true);
-      }, 2000);
+      }, 1500);
       return () => clearTimeout(timer);
     } else {
       setHasSeenTour(true);
     }
   }, []);
-
-  // Update target position
-  useEffect(() => {
-    if (!isVisible) return;
-
-    const updateTargetPosition = () => {
-      const step = tourSteps[currentStep];
-      const element = document.querySelector(step.target);
-      if (element) {
-        setTargetRect(element.getBoundingClientRect());
-        // Scroll element into view
-        element.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-    };
-
-    updateTargetPosition();
-    window.addEventListener("resize", updateTargetPosition);
-    window.addEventListener("scroll", updateTargetPosition);
-
-    return () => {
-      window.removeEventListener("resize", updateTargetPosition);
-      window.removeEventListener("scroll", updateTargetPosition);
-    };
-  }, [isVisible, currentStep]);
 
   const handleNext = useCallback(() => {
     if (currentStep < tourSteps.length - 1) {
@@ -152,15 +120,14 @@ export function OnboardingTour() {
   };
 
   if (!isVisible) {
-    // Show restart button if tour was seen
     if (hasSeenTour) {
       return (
         <button
           onClick={restartTour}
-          className="fixed bottom-6 right-6 z-40 p-3 rounded-full bg-gradient-to-r from-azure to-aqua text-primary-foreground shadow-lg hover:scale-110 transition-transform"
+          className="fixed bottom-6 right-6 z-40 p-3 rounded-full bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-lg hover:scale-110 transition-transform group"
           aria-label="Restart feature tour"
         >
-          <Zap className="w-5 h-5" />
+          <Zap className="w-5 h-5 group-hover:animate-pulse" />
         </button>
       );
     }
@@ -170,126 +137,108 @@ export function OnboardingTour() {
   const step = tourSteps[currentStep];
   const StepIcon = step.icon;
 
-  // Calculate tooltip position
-  const getTooltipStyle = (): React.CSSProperties => {
-    if (!targetRect || step.position === "center") {
-      return {
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-      };
-    }
-
-    const padding = 20;
-    const tooltipWidth = 360;
-    const tooltipHeight = 200;
-
-    switch (step.position) {
-      case "bottom":
-        return {
-          top: targetRect.bottom + padding,
-          left: Math.max(padding, Math.min(targetRect.left + targetRect.width / 2 - tooltipWidth / 2, window.innerWidth - tooltipWidth - padding)),
-        };
-      case "top":
-        return {
-          top: targetRect.top - tooltipHeight - padding,
-          left: Math.max(padding, Math.min(targetRect.left + targetRect.width / 2 - tooltipWidth / 2, window.innerWidth - tooltipWidth - padding)),
-        };
-      case "left":
-        return {
-          top: targetRect.top + targetRect.height / 2 - tooltipHeight / 2,
-          left: targetRect.left - tooltipWidth - padding,
-        };
-      case "right":
-        return {
-          top: targetRect.top + targetRect.height / 2 - tooltipHeight / 2,
-          left: targetRect.right + padding,
-        };
-      default:
-        return {
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-        };
-    }
-  };
-
   return (
-    <>
-      {/* Backdrop overlay */}
+    <div 
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="tour-title"
+    >
+      {/* Backdrop */}
       <div 
-        className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm transition-opacity duration-300"
+        className="absolute inset-0 bg-background/90 backdrop-blur-md"
         onClick={handleClose}
-        aria-hidden="true"
       />
 
-      {/* Highlight spotlight */}
-      {targetRect && (
-        <div
-          className="fixed z-50 pointer-events-none transition-all duration-500 ease-out"
-          style={{
-            top: targetRect.top - 8,
-            left: targetRect.left - 8,
-            width: targetRect.width + 16,
-            height: targetRect.height + 16,
-            boxShadow: "0 0 0 9999px rgba(0, 0, 0, 0.75)",
-            borderRadius: "12px",
-          }}
-        >
-          {/* Animated border */}
-          <div className="absolute inset-0 rounded-xl border-2 border-aqua animate-pulse" />
-          <div className="absolute inset-0 rounded-xl bg-aqua/10" />
-        </div>
-      )}
-
-      {/* Tooltip */}
-      <div
-        className="fixed z-[60] w-[360px] animate-scale-in"
-        style={getTooltipStyle()}
-        role="dialog"
-        aria-labelledby="tour-title"
-        aria-describedby="tour-description"
-      >
-        <div className="bg-card/95 backdrop-blur-xl rounded-2xl border border-aqua/30 shadow-2xl shadow-aqua/10 overflow-hidden">
-          {/* Header */}
-          <div className="bg-gradient-to-r from-azure to-aqua p-4 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-primary-foreground/20 flex items-center justify-center">
-                <StepIcon className="w-5 h-5 text-primary-foreground" />
-              </div>
-              <div>
-                <h3 id="tour-title" className="font-bold text-primary-foreground">{step.title}</h3>
-                <p className="text-xs text-primary-foreground/70">Step {currentStep + 1} of {tourSteps.length}</p>
-              </div>
+      {/* Modal Card */}
+      <div className="relative w-full max-w-lg animate-scale-in">
+        <div className="bg-card border border-border rounded-2xl shadow-2xl overflow-hidden">
+          {/* Header with gradient */}
+          <div className="relative bg-gradient-to-r from-primary to-secondary p-6">
+            {/* Animated background pattern */}
+            <div className="absolute inset-0 opacity-20">
+              <div className="absolute top-0 left-0 w-32 h-32 bg-primary-foreground/20 rounded-full blur-3xl animate-pulse" />
+              <div className="absolute bottom-0 right-0 w-24 h-24 bg-primary-foreground/10 rounded-full blur-2xl animate-pulse" style={{ animationDelay: "1s" }} />
             </div>
-            <button
-              onClick={handleClose}
-              className="p-1.5 rounded-lg hover:bg-primary-foreground/20 transition-colors"
-              aria-label="Close tour"
-            >
-              <X className="w-4 h-4 text-primary-foreground" />
-            </button>
+            
+            <div className="relative flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-xl bg-primary-foreground/20 backdrop-blur-sm flex items-center justify-center border border-primary-foreground/30">
+                  <StepIcon className="w-7 h-7 text-primary-foreground" />
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-primary-foreground/70 uppercase tracking-wider">
+                    Step {currentStep + 1} of {tourSteps.length}
+                  </p>
+                  <h2 id="tour-title" className="text-xl font-bold text-primary-foreground">
+                    {step.title}
+                  </h2>
+                </div>
+              </div>
+              <button
+                onClick={handleClose}
+                className="p-2 rounded-lg hover:bg-primary-foreground/20 transition-colors"
+                aria-label="Close tour"
+              >
+                <X className="w-5 h-5 text-primary-foreground" />
+              </button>
+            </div>
           </div>
 
           {/* Content */}
-          <div className="p-5">
-            <p id="tour-description" className="text-sm text-muted-foreground leading-relaxed mb-4">
+          <div className="p-6">
+            <p className="text-muted-foreground leading-relaxed mb-6">
               {step.description}
             </p>
 
-            {/* Progress dots */}
-            <div className="flex justify-center gap-1.5 mb-4">
+            {/* Feature highlight visual */}
+            <div className="mb-6 p-4 bg-muted/50 rounded-xl border border-border">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                  <StepIcon className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-foreground">
+                    {step.highlight === "hero" && "Digital Experience Intelligence"}
+                    {step.highlight === "demo" && "Live Session Replay"}
+                    {step.highlight === "proxima" && "AI-Powered Analysis"}
+                    {step.highlight === "security" && "Zero-Trust Architecture"}
+                    {step.highlight === "roi" && "Measurable Impact"}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Explore this feature in the section below
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Progress bar */}
+            <div className="mb-6">
+              <div className="flex justify-between text-xs text-muted-foreground mb-2">
+                <span>Progress</span>
+                <span>{Math.round(((currentStep + 1) / tourSteps.length) * 100)}%</span>
+              </div>
+              <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-gradient-to-r from-primary to-secondary transition-all duration-500 ease-out rounded-full"
+                  style={{ width: `${((currentStep + 1) / tourSteps.length) * 100}%` }}
+                />
+              </div>
+            </div>
+
+            {/* Step indicators */}
+            <div className="flex justify-center gap-2 mb-6">
               {tourSteps.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setCurrentStep(index)}
                   className={cn(
-                    "w-2 h-2 rounded-full transition-all duration-300",
+                    "h-2 rounded-full transition-all duration-300",
                     index === currentStep 
-                      ? "w-6 bg-aqua" 
+                      ? "w-8 bg-primary" 
                       : index < currentStep 
-                        ? "bg-aqua/50" 
-                        : "bg-muted-foreground/30"
+                        ? "w-2 bg-primary/50" 
+                        : "w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50"
                   )}
                   aria-label={`Go to step ${index + 1}`}
                 />
@@ -297,8 +246,8 @@ export function OnboardingTour() {
             </div>
 
             {/* Navigation buttons */}
-            <div className="flex gap-2">
-              {currentStep > 0 && (
+            <div className="flex gap-3">
+              {currentStep > 0 ? (
                 <Button
                   variant="outline"
                   onClick={handlePrev}
@@ -307,11 +256,18 @@ export function OnboardingTour() {
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back
                 </Button>
+              ) : (
+                <Button
+                  variant="ghost"
+                  onClick={handleClose}
+                  className="flex-1 text-muted-foreground"
+                >
+                  Skip Tour
+                </Button>
               )}
               <Button
-                variant="hero"
                 onClick={handleNext}
-                className="flex-1"
+                className="flex-1 bg-gradient-to-r from-primary to-secondary hover:opacity-90"
               >
                 {currentStep === tourSteps.length - 1 ? (
                   <>
@@ -327,29 +283,13 @@ export function OnboardingTour() {
               </Button>
             </div>
 
-            {/* Skip link */}
-            <button
-              onClick={handleClose}
-              className="w-full mt-3 text-xs text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Skip tour (press Esc)
-            </button>
+            {/* Keyboard hint */}
+            <p className="mt-4 text-center text-xs text-muted-foreground">
+              Use <kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">←</kbd> <kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">→</kbd> or <kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">Esc</kbd> to navigate
+            </p>
           </div>
         </div>
-
-        {/* Arrow pointer */}
-        {targetRect && step.position !== "center" && (
-          <div
-            className={cn(
-              "absolute w-4 h-4 bg-card border-aqua/30 transform rotate-45",
-              step.position === "bottom" && "-top-2 left-1/2 -translate-x-1/2 border-t border-l",
-              step.position === "top" && "-bottom-2 left-1/2 -translate-x-1/2 border-b border-r",
-              step.position === "left" && "-right-2 top-1/2 -translate-y-1/2 border-t border-r",
-              step.position === "right" && "-left-2 top-1/2 -translate-y-1/2 border-b border-l"
-            )}
-          />
-        )}
       </div>
-    </>
+    </div>
   );
 }
