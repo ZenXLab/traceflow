@@ -19,6 +19,7 @@ import { Footer } from "@/components/traceflow/Footer";
 import { ScrollProgress } from "@/components/traceflow/ScrollProgress";
 import { TechStackDiagram } from "@/components/traceflow/TechStackDiagram";
 import { OnboardingTour } from "@/components/traceflow/OnboardingTour";
+import { ScrollReveal } from "@/components/traceflow/ScrollReveal";
 
 const Index = () => {
   useEffect(() => {
@@ -42,21 +43,66 @@ const Index = () => {
       <EnhancedNavigation />
       <main id="main-content" role="main">
         <EnhancedHeroSection />
-        <EnhancedPipelineSection />
-        <VideoDemoSection />
-        <ModulesGrid />
-        <FeatureCategories />
-        <TechStackDiagram />
-        <EnhancedIndustrySolutions />
-        <EnhancedWorldFirstFeatures />
-        <CompetitiveMatrix />
-        <EnhancedSecurityArchitecture />
-        <ProximaAI />
-        <StorySection />
-        <CaseStudies />
-        <Testimonials />
-        <EnhancedROICalculator />
-        <PricingSection />
+        
+        <ScrollReveal direction="up">
+          <EnhancedPipelineSection />
+        </ScrollReveal>
+        
+        <ScrollReveal direction="up" delay={100}>
+          <VideoDemoSection />
+        </ScrollReveal>
+        
+        <ScrollReveal direction="up">
+          <ModulesGrid />
+        </ScrollReveal>
+        
+        <ScrollReveal direction="up">
+          <FeatureCategories />
+        </ScrollReveal>
+        
+        <ScrollReveal direction="up">
+          <TechStackDiagram />
+        </ScrollReveal>
+        
+        <ScrollReveal direction="up">
+          <EnhancedIndustrySolutions />
+        </ScrollReveal>
+        
+        <ScrollReveal direction="up">
+          <EnhancedWorldFirstFeatures />
+        </ScrollReveal>
+        
+        <ScrollReveal direction="up">
+          <CompetitiveMatrix />
+        </ScrollReveal>
+        
+        <ScrollReveal direction="up">
+          <EnhancedSecurityArchitecture />
+        </ScrollReveal>
+        
+        <ScrollReveal direction="up">
+          <ProximaAI />
+        </ScrollReveal>
+        
+        <ScrollReveal direction="up">
+          <StorySection />
+        </ScrollReveal>
+        
+        <ScrollReveal direction="up">
+          <CaseStudies />
+        </ScrollReveal>
+        
+        <ScrollReveal direction="up">
+          <Testimonials />
+        </ScrollReveal>
+        
+        <ScrollReveal direction="up">
+          <EnhancedROICalculator />
+        </ScrollReveal>
+        
+        <ScrollReveal direction="up">
+          <PricingSection />
+        </ScrollReveal>
       </main>
       <Footer />
       <OnboardingTour />
