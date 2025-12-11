@@ -1,0 +1,416 @@
+import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Shield, Lock, Globe, Key, Fingerprint, Play, AlertTriangle, Zap, BarChart3, Brain, Ticket } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const trustBadges = [
+  { icon: Shield, label: "SOC2 Type II" },
+  { icon: Lock, label: "Zero-PII" },
+  { icon: Globe, label: "GDPR Ready" },
+  { icon: Key, label: "Hybrid/On-Prem" },
+  { icon: Fingerprint, label: "Dual WebAuthn" },
+];
+
+export function EnhancedHeroSection() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
+  // Enhanced particle animation with intelligence hub
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const resizeCanvas = () => {
+      canvas.width = canvas.offsetWidth * 2;
+      canvas.height = canvas.offsetHeight * 2;
+      ctx.scale(2, 2);
+    };
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    interface Particle {
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      radius: number;
+      opacity: number;
+      color: string;
+      targetX: number;
+      targetY: number;
+      angle: number;
+      orbitRadius: number;
+      orbitSpeed: number;
+    }
+
+    const particles: Particle[] = [];
+    const colors = ["#0B3D91", "#00C2D8", "#FF8A00"];
+    const centerX = canvas.offsetWidth / 2;
+    const centerY = canvas.offsetHeight / 2;
+
+    // Create orbiting particles
+    for (let i = 0; i < 80; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const orbitRadius = 80 + Math.random() * 200;
+      particles.push({
+        x: centerX + Math.cos(angle) * orbitRadius,
+        y: centerY + Math.sin(angle) * orbitRadius,
+        vx: 0,
+        vy: 0,
+        radius: Math.random() * 2.5 + 0.5,
+        opacity: Math.random() * 0.6 + 0.2,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        targetX: centerX,
+        targetY: centerY,
+        angle,
+        orbitRadius,
+        orbitSpeed: (Math.random() - 0.5) * 0.01,
+      });
+    }
+
+    let animationId: number;
+    let time = 0;
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
+      time += 0.01;
+
+      // Draw central intelligence hub
+      const hubGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 60);
+      hubGradient.addColorStop(0, "rgba(0, 194, 216, 0.4)");
+      hubGradient.addColorStop(0.5, "rgba(11, 61, 145, 0.2)");
+      hubGradient.addColorStop(1, "transparent");
+      
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 50 + Math.sin(time * 2) * 5, 0, Math.PI * 2);
+      ctx.fillStyle = hubGradient;
+      ctx.fill();
+
+      // Inner core
+      const coreGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 25);
+      coreGradient.addColorStop(0, "rgba(0, 194, 216, 0.8)");
+      coreGradient.addColorStop(1, "rgba(11, 61, 145, 0.4)");
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 20, 0, Math.PI * 2);
+      ctx.fillStyle = coreGradient;
+      ctx.fill();
+
+      // Draw orbit rings
+      [100, 150, 200].forEach((radius, i) => {
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(0, 194, 216, ${0.1 - i * 0.02})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      });
+
+      // Update and draw particles
+      particles.forEach((p, index) => {
+        // Update orbit angle
+        p.angle += p.orbitSpeed;
+        
+        // Some particles flow toward center
+        if (index % 3 === 0) {
+          const dx = centerX - p.x;
+          const dy = centerY - p.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance > 30) {
+            p.x += dx * 0.002;
+            p.y += dy * 0.002;
+          } else {
+            // Reset to outer edge
+            p.angle = Math.random() * Math.PI * 2;
+            p.orbitRadius = 200 + Math.random() * 100;
+            p.x = centerX + Math.cos(p.angle) * p.orbitRadius;
+            p.y = centerY + Math.sin(p.angle) * p.orbitRadius;
+          }
+        } else {
+          // Orbit around center
+          p.x = centerX + Math.cos(p.angle) * p.orbitRadius;
+          p.y = centerY + Math.sin(p.angle) * p.orbitRadius;
+        }
+
+        // Draw connection to center
+        const distance = Math.sqrt((centerX - p.x) ** 2 + (centerY - p.y) ** 2);
+        if (distance < 180) {
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(centerX, centerY);
+          ctx.strokeStyle = `rgba(0, 194, 216, ${0.15 * (1 - distance / 180)})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+
+        // Draw particle
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color + Math.floor(p.opacity * 255).toString(16).padStart(2, "0");
+        ctx.fill();
+      });
+
+      animationId = requestAnimationFrame(animate);
+    };
+    animate();
+
+    return () => {
+      window.removeEventListener("resize", resizeCanvas);
+      cancelAnimationFrame(animationId);
+    };
+  }, []);
+
+  // Magnetic button effect
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePos({
+      x: (e.clientX - rect.left - rect.width / 2) * 0.1,
+      y: (e.clientY - rect.top - rect.height / 2) * 0.1,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setMousePos({ x: 0, y: 0 });
+  };
+
+  return (
+    <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+      {/* Background Elements */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full pointer-events-none"
+      />
+      <div className="absolute inset-0 bg-gradient-radial from-azure/10 via-transparent to-transparent" />
+      
+      {/* Ambient glow orbs */}
+      <div className="absolute top-1/4 -left-40 w-96 h-96 bg-azure/20 rounded-full blur-3xl animate-pulse-glow" />
+      <div className="absolute bottom-1/4 -right-40 w-96 h-96 bg-aqua/20 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: "1.5s" }} />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-azure/5 rounded-full blur-3xl" />
+
+      <div className="container-wide relative z-10 px-4 lg:px-8 py-16 lg:py-24">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* Left Content */}
+          <div className={cn(
+            "space-y-8 transition-all duration-1000",
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          )}>
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border-aqua/30">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-aqua opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-aqua"></span>
+              </span>
+              <span className="text-sm font-medium text-aqua">The World's First</span>
+            </div>
+
+            {/* Title */}
+            <div className="space-y-4">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.1]">
+                <span className="block">TRACEFLOW —</span>
+                <span className="block mt-2 relative">
+                  <span className="gradient-text animate-gradient bg-gradient-to-r from-azure via-aqua to-azure bg-[length:200%_auto]">
+                    Digital Cognition
+                  </span>
+                  {/* Glow underline */}
+                  <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-azure via-aqua to-transparent rounded-full opacity-50" />
+                </span>
+                <span className="block mt-2">Infrastructure</span>
+              </h1>
+              
+              <p className="text-lg lg:text-xl text-muted-foreground max-w-xl text-balance leading-relaxed">
+                Unify clickstream, observability, and multimodal feedback into a 
+                Zero-Trust, Hybrid-Ready Intelligence Layer for banks, insurers, 
+                telcos, governments, and mission-critical enterprises.
+              </p>
+
+              {/* Tagline */}
+              <p className="text-xl lg:text-2xl font-semibold">
+                <span className="gradient-text-orange">"Every Signal.</span>
+                <span className="text-foreground"> One Intelligence."</span>
+              </p>
+            </div>
+
+            {/* CTAs with magnetic effect */}
+            <div 
+              className="flex flex-wrap gap-4"
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+            >
+              <Button 
+                variant="hero" 
+                size="xl" 
+                className="group relative"
+                style={{
+                  transform: `translate(${mousePos.x}px, ${mousePos.y}px)`,
+                  transition: "transform 0.2s ease-out",
+                }}
+              >
+                <Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
+                Request Demo
+                {/* Particle burst on hover */}
+                <div className="absolute inset-0 pointer-events-none">
+                  <div className="absolute top-1/2 left-1/2 w-2 h-2 rounded-full bg-orange opacity-0 group-hover:animate-[burst_0.6s_ease-out_forwards]" />
+                </div>
+              </Button>
+              <Button 
+                variant="outline" 
+                size="xl"
+                className="border-border/50 hover:border-aqua/50"
+              >
+                Explore Platform
+              </Button>
+            </div>
+
+            {/* Trust Badges */}
+            <div className="flex flex-wrap gap-3 pt-4">
+              {trustBadges.map((badge, index) => (
+                <div
+                  key={badge.label}
+                  className={cn(
+                    "flex items-center gap-2 px-4 py-2.5 rounded-xl",
+                    "bg-muted/30 border border-border/30",
+                    "text-sm text-muted-foreground",
+                    "hover:border-aqua/30 hover:text-foreground hover:bg-muted/50",
+                    "transition-all duration-300 cursor-default",
+                    "animate-fade-in-up"
+                  )}
+                  style={{ animationDelay: `${index * 100 + 500}ms` }}
+                >
+                  <badge.icon className="w-4 h-4 text-aqua" />
+                  {badge.label}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right Content - Enhanced Dashboard Preview */}
+          <div className={cn(
+            "relative transition-all duration-1000 delay-300",
+            isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
+          )}>
+            <div className="relative perspective-1000">
+              {/* Main Dashboard Card */}
+              <div className="glass-strong rounded-2xl p-6 shadow-2xl hover:shadow-azure/20 transition-shadow duration-500 border border-border/50">
+                {/* Browser Chrome */}
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-3 h-3 rounded-full bg-destructive/70 hover:bg-destructive transition-colors"></div>
+                    <div className="w-3 h-3 rounded-full bg-orange/70 hover:bg-orange transition-colors"></div>
+                    <div className="w-3 h-3 rounded-full bg-aqua/70 hover:bg-aqua transition-colors"></div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-aqua opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-aqua"></span>
+                    </span>
+                    <span className="text-xs text-muted-foreground font-mono">live dashboard</span>
+                  </div>
+                </div>
+
+                {/* Session Recording Preview */}
+                <div className="bg-muted/20 rounded-xl p-4 mb-4 border border-border/30">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="relative flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-destructive opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-destructive"></span>
+                    </div>
+                    <span className="text-xs font-medium text-destructive">Recording Session #4821</span>
+                    <span className="ml-auto text-xs text-muted-foreground">2:34</span>
+                  </div>
+                  <div className="aspect-video bg-background/50 rounded-lg relative overflow-hidden border border-border/20">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-16 h-16 rounded-full bg-azure/20 flex items-center justify-center animate-pulse">
+                        <Play className="w-6 h-6 text-azure" />
+                      </div>
+                    </div>
+                    {/* Simulated cursor */}
+                    <div className="absolute w-4 h-4 rounded-full bg-aqua shadow-[0_0_10px_hsl(var(--aqua))] animate-[moveCursor_3s_ease-in-out_infinite]" 
+                         style={{ top: "40%", left: "30%" }} />
+                    {/* Progress bar */}
+                    <div className="absolute bottom-2 left-2 right-2 h-1 bg-muted rounded-full overflow-hidden">
+                      <div className="h-full w-2/3 bg-gradient-to-r from-azure to-aqua rounded-full animate-[pulse_2s_ease-in-out_infinite]"></div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* PROXIMA AI Card */}
+                <div className="bg-gradient-to-r from-azure/10 to-aqua/10 rounded-xl p-4 mb-4 border border-azure/20">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Brain className="w-4 h-4 text-aqua" />
+                    <span className="text-sm font-semibold">PROXIMA AI Analysis</span>
+                    <span className="ml-auto px-2 py-0.5 rounded text-xs bg-aqua/20 text-aqua">Processing</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground mb-3">
+                    Detected <span className="text-destructive font-medium">3 friction points</span> in checkout flow. 
+                    Estimated revenue impact: <span className="text-orange font-medium">$12,400/day</span>
+                  </p>
+                  <div className="flex gap-2">
+                    <span className="px-2.5 py-1 text-xs rounded-lg bg-aqua/20 text-aqua flex items-center gap-1">
+                      <Ticket className="w-3 h-3" />
+                      Auto-Ticket
+                    </span>
+                    <span className="px-2.5 py-1 text-xs rounded-lg bg-azure/20 text-azure">View Details</span>
+                  </div>
+                </div>
+
+                {/* Rage Click Detection */}
+                <div className="flex items-center gap-3 p-3 bg-destructive/10 rounded-xl border border-destructive/20">
+                  <AlertTriangle className="w-5 h-5 text-destructive animate-bounce-subtle" />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">Rage Click Detected</p>
+                    <p className="text-xs text-muted-foreground">Submit button - 23 rapid clicks in 4s</p>
+                  </div>
+                  <BarChart3 className="w-5 h-5 text-muted-foreground" />
+                </div>
+              </div>
+
+              {/* Floating Stats Cards */}
+              <div className="absolute -top-6 -right-6 glass rounded-xl p-4 animate-float shadow-xl border border-border/50">
+                <div className="text-2xl font-bold gradient-text">1.2B+</div>
+                <div className="text-xs text-muted-foreground">Events/Day</div>
+              </div>
+              
+              <div className="absolute -bottom-4 -left-4 glass rounded-xl p-4 animate-float shadow-xl border border-border/50" style={{ animationDelay: "1s" }}>
+                <div className="text-2xl font-bold text-aqua">23ms</div>
+                <div className="text-xs text-muted-foreground">P99 Latency</div>
+              </div>
+
+              <div className="absolute top-1/2 -right-8 glass rounded-xl p-3 animate-float shadow-xl border border-border/50" style={{ animationDelay: "0.5s" }}>
+                <div className="text-lg font-bold text-orange">99.99%</div>
+                <div className="text-xs text-muted-foreground">Uptime</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce-subtle">
+        <span className="text-xs text-muted-foreground">Scroll to explore</span>
+        <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex justify-center pt-2">
+          <div className="w-1.5 h-3 rounded-full bg-aqua animate-bounce"></div>
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes moveCursor {
+          0%, 100% { transform: translate(0, 0); }
+          25% { transform: translate(100px, 20px); }
+          50% { transform: translate(80px, 60px); }
+          75% { transform: translate(20px, 40px); }
+        }
+        @keyframes burst {
+          0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+          100% { transform: translate(-50%, -50%) scale(20); opacity: 0; }
+        }
+      `}</style>
+    </section>
+  );
+}
