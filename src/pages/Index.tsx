@@ -59,6 +59,7 @@ const Index = () => {
         <PricingSection />
       </main>
       <Footer />
+      <OnboardingTour />
     </div>
   );
 };
