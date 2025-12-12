@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { TraceflowMegaMenu } from "./TraceflowMegaMenu";
 import { ThemeToggle } from "./ThemeToggle";
+import { ContactFormModal } from "./ContactFormModal";
 
 const navLinks = [
   { label: "Features", href: "#features", hasMegaMenu: true },
@@ -105,17 +106,20 @@ export function EnhancedNavigation() {
           onClose={() => setIsMegaMenuOpen(false)} 
         />
 
-        {/* Desktop CTAs */}
         <div className="hidden lg:flex items-center gap-3">
           <ThemeToggle />
-          <Button variant="ghost-light" size="sm">
+          <Button variant="ghost-light" size="sm" className="hover:scale-[1.02] active:scale-95">
             Sign In
           </Button>
-          <Button variant="hero" size="sm" className="relative overflow-hidden group">
-            <span className="relative z-10">Request Demo</span>
-            {/* Glow pulse effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-orange/0 via-orange/30 to-orange/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-shimmer" />
-          </Button>
+          <ContactFormModal
+            defaultInquiryType="demo"
+            trigger={
+              <Button variant="hero" size="sm" className="relative overflow-hidden group">
+                <span className="relative z-10">Request Demo</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-orange/0 via-orange/30 to-orange/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-shimmer" />
+              </Button>
+            }
+          />
         </div>
 
         {/* Mobile Menu Button */}

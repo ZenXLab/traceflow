@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Shield, Lock, Globe, Key, Fingerprint, Play, AlertTriangle, BarChart3, Brain, Ticket, MousePointer, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import heroBackground from "@/assets/hero-background.png";
+import { ContactFormModal } from "./ContactFormModal";
 
 const trustBadges = [
   { icon: Shield, label: "SOC2 Type II" },
@@ -292,22 +293,24 @@ export function EnhancedHeroSection() {
               role="group"
               aria-label="Call to action buttons"
             >
-              <Button 
-                variant="hero" 
-                size="xl" 
-                className="group relative"
-                style={{
-                  transform: `translate(${mousePos.x}px, ${mousePos.y}px)`,
-                  transition: "transform 0.2s ease-out",
-                }}
-                aria-label="Request a demo of TRACEFLOW"
-              >
-                <Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" aria-hidden="true" />
-                Request Demo
-                <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-                  <div className="absolute top-1/2 left-1/2 w-2 h-2 rounded-full bg-orange opacity-0 group-hover:animate-[burst_0.6s_ease-out_forwards]" />
-                </div>
-              </Button>
+              <ContactFormModal
+                defaultInquiryType="demo"
+                trigger={
+                  <Button 
+                    variant="hero" 
+                    size="xl" 
+                    className="group relative"
+                    style={{
+                      transform: `translate(${mousePos.x}px, ${mousePos.y}px)`,
+                      transition: "transform 0.2s ease-out",
+                    }}
+                    aria-label="Request a demo of TRACEFLOW"
+                  >
+                    <Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" aria-hidden="true" />
+                    Request Demo
+                  </Button>
+                }
+              />
               <Button 
                 variant="outline" 
                 size="xl"
