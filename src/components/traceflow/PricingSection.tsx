@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Check, Shield, Globe, Key, Zap, Play, Users, Crown } from "lucide-react";
+import { ContactFormModal } from "./ContactFormModal";
 
 const addOns = [
   { id: "proxima", label: "PROXIMA AI", icon: Zap, price: "+$500/mo" },
@@ -132,10 +133,11 @@ export function PricingSection() {
                     key={addOn.id}
                     onClick={() => toggleAddOn(addOn.id)}
                     className={cn(
-                      "flex items-center gap-3 p-4 rounded-xl border transition-all duration-300 text-left",
+                      "flex items-center gap-3 p-4 rounded-xl border transition-all duration-300 text-left group",
+                      "hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98]",
                       selectedAddOns.includes(addOn.id)
-                        ? "border-aqua bg-aqua/10"
-                        : "border-border/50 hover:border-border"
+                        ? "border-aqua bg-aqua/10 shadow-[0_4px_20px_hsl(var(--aqua)/0.2)]"
+                        : "border-border/50 hover:border-border hover:shadow-lg"
                     )}
                   >
                     <div
@@ -170,11 +172,15 @@ export function PricingSection() {
               ))}
             </div>
 
-            {/* CTA */}
             <div className="text-center">
-              <Button variant="hero" size="xl" className="w-full sm:w-auto">
-                Request Enterprise Quote
-              </Button>
+              <ContactFormModal
+                defaultInquiryType="enterprise"
+                trigger={
+                  <Button variant="hero" size="xl" className="w-full sm:w-auto">
+                    Request Enterprise Quote
+                  </Button>
+                }
+              />
               <p className="text-sm text-muted-foreground mt-4">
                 No credit card required • 14-day free trial • Cancel anytime
               </p>

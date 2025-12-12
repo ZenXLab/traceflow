@@ -70,7 +70,7 @@ export function Footer() {
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                      className="text-sm text-muted-foreground hover:text-foreground hover:translate-x-1 transition-all duration-300 inline-block"
                     >
                       {link.label}
                     </a>
@@ -93,7 +93,7 @@ export function Footer() {
               <a
                 key={social.label}
                 href={social.href}
-                className="w-10 h-10 rounded-lg glass border border-border/50 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-aqua/50 transition-all"
+                className="w-10 h-10 rounded-lg glass border border-border/50 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-aqua/50 hover:scale-110 hover:-translate-y-1 hover:shadow-[0_8px_20px_hsl(var(--aqua)/0.2)] transition-all duration-300"
                 aria-label={social.label}
               >
                 <social.icon className="w-5 h-5" />
