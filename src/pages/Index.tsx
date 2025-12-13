@@ -10,6 +10,8 @@ import { EnhancedWorldFirstFeatures } from "@/components/traceflow/EnhancedWorld
 import { CompetitiveMatrix } from "@/components/traceflow/CompetitiveMatrix";
 import { EnhancedSecurityArchitecture } from "@/components/traceflow/EnhancedSecurityArchitecture";
 import { ProximaAI } from "@/components/traceflow/ProximaAI";
+import { AgentInteractiveDemo } from "@/components/traceflow/AgentInteractiveDemo";
+import { AgentComparisonTable } from "@/components/traceflow/AgentComparisonTable";
 import { StorySection } from "@/components/traceflow/StorySection";
 import { CaseStudies } from "@/components/traceflow/CaseStudies";
 import { Testimonials } from "@/components/traceflow/Testimonials";
@@ -94,6 +96,16 @@ const Index = () => {
         {/* Proxima AI - fade in */}
         <ScrollReveal direction="fade" duration={800}>
           <ProximaAI />
+        </ScrollReveal>
+        
+        {/* Interactive Demo - slides up */}
+        <ScrollReveal direction="up" duration={700}>
+          <AgentInteractiveDemo />
+        </ScrollReveal>
+        
+        {/* Comparison Table - slides from right */}
+        <ScrollReveal direction="right" duration={700}>
+          <AgentComparisonTable />
         </ScrollReveal>
         
         {/* Story - slides from right */}
