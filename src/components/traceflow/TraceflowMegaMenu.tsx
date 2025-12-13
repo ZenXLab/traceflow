@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { 
   MousePointerClick, 
@@ -32,48 +33,52 @@ const megaMenuData = {
     title: "Capture",
     icon: MousePointerClick,
     color: "from-azure to-azure/70",
+    href: "/features/capture",
     items: [
-      { icon: Radio, label: "SDK Integration", desc: "Multi-platform SDK" },
-      { icon: Play, label: "Session Replay", desc: "Pixel-perfect playback" },
-      { icon: Activity, label: "Event Tracking", desc: "Custom taxonomies" },
-      { icon: Smartphone, label: "Mobile Capture", desc: "iOS & Android" },
-      { icon: Layers, label: "DOM Snapshots", desc: "Full DOM tree capture" },
+      { icon: Radio, label: "SDK Integration", desc: "Multi-platform SDK", href: "/features/capture" },
+      { icon: Play, label: "Session Replay", desc: "Pixel-perfect playback", href: "/features/capture" },
+      { icon: Activity, label: "Event Tracking", desc: "Custom taxonomies", href: "/features/capture" },
+      { icon: Smartphone, label: "Mobile Capture", desc: "iOS & Android", href: "/features/capture" },
+      { icon: Layers, label: "DOM Snapshots", desc: "Full DOM tree capture", href: "/features/capture" },
     ],
   },
   intelligence: {
     title: "Intelligence",
     icon: Brain,
     color: "from-aqua to-aqua/70",
+    href: "/features/intelligence",
     items: [
-      { icon: Sparkles, label: "PROXIMA AI", desc: "Multi-agent analysis" },
-      { icon: FileText, label: "AI Summaries", desc: "Session insights" },
-      { icon: GitBranch, label: "Root Cause Analysis", desc: "Causality engine" },
-      { icon: Route, label: "Journey Mapping", desc: "Path optimization" },
-      { icon: Eye, label: "UX Vision", desc: "Visual analytics" },
+      { icon: Sparkles, label: "PROXIMA AI", desc: "Multi-agent analysis", href: "/features/intelligence" },
+      { icon: FileText, label: "AI Summaries", desc: "Session insights", href: "/features/intelligence" },
+      { icon: GitBranch, label: "Root Cause Analysis", desc: "Causality engine", href: "/features/intelligence" },
+      { icon: Route, label: "Journey Mapping", desc: "Path optimization", href: "/features/intelligence" },
+      { icon: Eye, label: "UX Vision", desc: "Visual analytics", href: "/features/intelligence" },
     ],
   },
   security: {
     title: "Security",
     icon: Shield,
     color: "from-orange to-orange/70",
+    href: "/features/security",
     items: [
-      { icon: Lock, label: "Zero-Trust Pipeline", desc: "End-to-end security" },
-      { icon: Key, label: "PII Tokenization", desc: "Auto-redaction" },
-      { icon: Users, label: "RBAC Controls", desc: "Granular permissions" },
-      { icon: FileText, label: "Audit Logs", desc: "Complete history" },
-      { icon: Globe, label: "Data Residency", desc: "Multi-region control" },
+      { icon: Lock, label: "Zero-Trust Pipeline", desc: "End-to-end security", href: "/features/security" },
+      { icon: Key, label: "PII Tokenization", desc: "Auto-redaction", href: "/features/security" },
+      { icon: Users, label: "RBAC Controls", desc: "Granular permissions", href: "/features/security" },
+      { icon: FileText, label: "Audit Logs", desc: "Complete history", href: "/features/security" },
+      { icon: Globe, label: "Data Residency", desc: "Multi-region control", href: "/features/security" },
     ],
   },
   enterprise: {
     title: "Enterprise",
     icon: Building2,
     color: "from-azure/80 to-aqua/80",
+    href: "/features/enterprise",
     items: [
-      { icon: Server, label: "On-Prem Runner", desc: "Self-hosted option" },
-      { icon: Cloud, label: "Hybrid Deployment", desc: "Flexible architecture" },
-      { icon: Shield, label: "Air-Gapped Mode", desc: "Network isolation" },
-      { icon: Key, label: "SSO/SAML", desc: "Enterprise auth" },
-      { icon: Plug, label: "Integrations", desc: "Jira, Slack, PagerDuty" },
+      { icon: Server, label: "On-Prem Runner", desc: "Self-hosted option", href: "/features/enterprise" },
+      { icon: Cloud, label: "Hybrid Deployment", desc: "Flexible architecture", href: "/features/enterprise" },
+      { icon: Shield, label: "Air-Gapped Mode", desc: "Network isolation", href: "/features/enterprise" },
+      { icon: Key, label: "SSO/SAML", desc: "Enterprise auth", href: "/features/enterprise" },
+      { icon: Plug, label: "Integrations", desc: "Jira, Slack, PagerDuty", href: "/features/enterprise" },
     ],
   },
 };
@@ -133,15 +138,16 @@ export function TraceflowMegaMenu({ isOpen, onClose }: TraceflowMegaMenuProps) {
                 {/* Category Items */}
                 <div className="space-y-1">
                   {category.items.map((item, itemIndex) => (
-                    <a
+                    <Link
                       key={item.label}
-                      href="#"
+                      to={item.href}
                       className={cn(
                         "flex items-start gap-3 p-3 rounded-xl transition-all duration-300",
                         "hover:bg-muted/50 group",
                         "animate-fade-in-up"
                       )}
                       style={{ animationDelay: `${(categoryIndex * 50) + (itemIndex * 30)}ms` }}
+                      onClick={onClose}
                     >
                       <item.icon className={cn(
                         "w-4 h-4 mt-0.5 text-muted-foreground",
@@ -155,7 +161,7 @@ export function TraceflowMegaMenu({ isOpen, onClose }: TraceflowMegaMenuProps) {
                           {item.desc}
                         </div>
                       </div>
-                    </a>
+                    </Link>
                   ))}
                 </div>
               </div>
