@@ -5,6 +5,7 @@ import { ScrollProgress } from "@/components/traceflow/ScrollProgress";
 import { ScrollReveal } from "@/components/traceflow/ScrollReveal";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { CaptureHeroAnimation } from "@/components/traceflow/FeatureHeroAnimations";
 import { 
   Radio, Play, Activity, Smartphone, Layers, ArrowLeft, Check, 
   Code, Zap, Clock, Shield, ChevronRight, BarChart3
@@ -93,25 +94,31 @@ export default function CaptureFeatures() {
             </Link>
 
             <ScrollReveal direction="up">
-              <div className="max-w-4xl">
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-azure to-azure/70 text-primary-foreground text-sm font-bold mb-6">
-                  <Radio className="w-4 h-4" />
-                  Capture Platform
-                </span>
-                <h1 className="text-4xl lg:text-6xl font-bold mb-6">
-                  Capture <span className="gradient-text">Every Signal</span>
-                </h1>
-                <p className="text-xl text-muted-foreground mb-8 max-w-2xl">
-                  Multi-platform SDK integration with pixel-perfect session replay, custom event tracking, and complete DOM snapshots for total visibility.
-                </p>
-                <div className="flex flex-wrap gap-4">
-                  <Button variant="azure" size="lg">
-                    Get Started Free
-                    <ChevronRight className="w-4 h-4 ml-2" />
-                  </Button>
-                  <Button variant="outline" size="lg">
-                    View Documentation
-                  </Button>
+              <div className="grid lg:grid-cols-2 gap-12 items-center">
+                <div className="max-w-xl">
+                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-azure to-azure/70 text-primary-foreground text-sm font-bold mb-6">
+                    <Radio className="w-4 h-4" />
+                    Capture Platform
+                  </span>
+                  <h1 className="text-4xl lg:text-5xl font-bold mb-6">
+                    Capture <span className="gradient-text">Every Signal</span>
+                  </h1>
+                  <p className="text-xl text-muted-foreground mb-8">
+                    Multi-platform SDK integration with pixel-perfect session replay, custom event tracking, and complete DOM snapshots.
+                  </p>
+                  <div className="flex flex-wrap gap-4">
+                    <Button variant="azure" size="lg">
+                      Get Started Free
+                      <ChevronRight className="w-4 h-4 ml-2" />
+                    </Button>
+                    <Button variant="outline" size="lg">
+                      View Documentation
+                    </Button>
+                  </div>
+                </div>
+                <div className="relative h-[300px] lg:h-[350px]">
+                  <div className="absolute -inset-4 bg-gradient-to-r from-azure/20 via-aqua/10 to-transparent rounded-3xl blur-xl" />
+                  <CaptureHeroAnimation className="relative z-10" />
                 </div>
               </div>
             </ScrollReveal>

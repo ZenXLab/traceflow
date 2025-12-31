@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { EnhancedNavigation } from "@/components/traceflow/EnhancedNavigation";
 import { EnhancedHeroSection } from "@/components/traceflow/EnhancedHeroSection";
 import { EnhancedPipelineSection } from "@/components/traceflow/EnhancedPipelineSection";
+import { UniversalZeroTrustPipeline } from "@/components/traceflow/UniversalZeroTrustPipeline";
 import { VideoDemoSection } from "@/components/traceflow/VideoDemoSection";
 import { ModulesGrid } from "@/components/traceflow/ModulesGrid";
 import { FeatureCategories } from "@/components/traceflow/FeatureCategories";
@@ -51,6 +52,11 @@ const Index = () => {
         {/* Pipeline - slides up */}
         <ScrollReveal direction="up" duration={700}>
           <EnhancedPipelineSection />
+        </ScrollReveal>
+        
+        {/* Universal Zero-Trust Pipeline */}
+        <ScrollReveal direction="up" duration={700}>
+          <UniversalZeroTrustPipeline />
         </ScrollReveal>
         
         {/* Demo - slides from right */}
