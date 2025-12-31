@@ -5,6 +5,7 @@ import { ScrollProgress } from "@/components/traceflow/ScrollProgress";
 import { ScrollReveal } from "@/components/traceflow/ScrollReveal";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { EnterpriseHeroAnimation } from "@/components/traceflow/FeatureHeroAnimations";
 import { 
   Building2, Server, Cloud, Shield, Key, Plug, ArrowLeft, Check, 
   ChevronRight, Globe, Zap, Lock, Users, Headphones
@@ -88,25 +89,31 @@ export default function EnterpriseFeatures() {
             </Link>
 
             <ScrollReveal direction="up">
-              <div className="max-w-4xl">
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-azure/80 to-aqua/80 text-primary-foreground text-sm font-bold mb-6">
-                  <Building2 className="w-4 h-4" />
-                  Enterprise Platform
-                </span>
-                <h1 className="text-4xl lg:text-6xl font-bold mb-6">
-                  Built for <span className="gradient-text">Enterprise Scale</span>
-                </h1>
-                <p className="text-xl text-muted-foreground mb-8 max-w-2xl">
-                  On-premise deployment, hybrid architecture, and enterprise integrations for organizations that demand complete control.
-                </p>
-                <div className="flex flex-wrap gap-4">
-                  <Button variant="azure" size="lg">
-                    Contact Sales
-                    <ChevronRight className="w-4 h-4 ml-2" />
-                  </Button>
-                  <Button variant="outline" size="lg">
-                    Download Datasheet
-                  </Button>
+              <div className="grid lg:grid-cols-2 gap-12 items-center">
+                <div className="max-w-xl">
+                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-azure/80 to-aqua/80 text-primary-foreground text-sm font-bold mb-6">
+                    <Building2 className="w-4 h-4" />
+                    Enterprise Platform
+                  </span>
+                  <h1 className="text-4xl lg:text-5xl font-bold mb-6">
+                    Built for <span className="gradient-text">Enterprise Scale</span>
+                  </h1>
+                  <p className="text-xl text-muted-foreground mb-8">
+                    On-premise deployment, hybrid architecture, and enterprise integrations for organizations that demand complete control.
+                  </p>
+                  <div className="flex flex-wrap gap-4">
+                    <Button variant="azure" size="lg">
+                      Contact Sales
+                      <ChevronRight className="w-4 h-4 ml-2" />
+                    </Button>
+                    <Button variant="outline" size="lg">
+                      Download Datasheet
+                    </Button>
+                  </div>
+                </div>
+                <div className="relative h-[300px] lg:h-[350px]">
+                  <div className="absolute -inset-4 bg-gradient-to-r from-azure/20 via-aqua/10 to-transparent rounded-3xl blur-xl" />
+                  <EnterpriseHeroAnimation className="relative z-10" />
                 </div>
               </div>
             </ScrollReveal>
