@@ -5,6 +5,7 @@ import { ScrollProgress } from "@/components/traceflow/ScrollProgress";
 import { ScrollReveal } from "@/components/traceflow/ScrollReveal";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { SecurityHeroAnimation } from "@/components/traceflow/FeatureHeroAnimations";
 import { 
   Shield, Lock, Key, Users, FileText, Globe, ArrowLeft, Check, 
   ChevronRight, ShieldCheck, Eye, AlertTriangle, Fingerprint
@@ -86,25 +87,31 @@ export default function SecurityFeatures() {
             </Link>
 
             <ScrollReveal direction="up">
-              <div className="max-w-4xl">
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-orange to-orange/70 text-primary-foreground text-sm font-bold mb-6">
-                  <Shield className="w-4 h-4" />
-                  Security Platform
-                </span>
-                <h1 className="text-4xl lg:text-6xl font-bold mb-6">
-                  Zero-Trust <span className="gradient-text">Security Architecture</span>
-                </h1>
-                <p className="text-xl text-muted-foreground mb-8 max-w-2xl">
-                  Enterprise-grade security with automatic PII protection, granular access controls, and complete compliance coverage.
-                </p>
-                <div className="flex flex-wrap gap-4">
-                  <Button variant="orange" size="lg">
-                    Security Whitepaper
-                    <ChevronRight className="w-4 h-4 ml-2" />
-                  </Button>
-                  <Button variant="outline" size="lg">
-                    Request Audit Report
-                  </Button>
+              <div className="grid lg:grid-cols-2 gap-12 items-center">
+                <div className="max-w-xl">
+                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-orange to-orange/70 text-primary-foreground text-sm font-bold mb-6">
+                    <Shield className="w-4 h-4" />
+                    Security Platform
+                  </span>
+                  <h1 className="text-4xl lg:text-5xl font-bold mb-6">
+                    Zero-Trust <span className="gradient-text">Security Architecture</span>
+                  </h1>
+                  <p className="text-xl text-muted-foreground mb-8">
+                    Enterprise-grade security with automatic PII protection, granular access controls, and complete compliance coverage.
+                  </p>
+                  <div className="flex flex-wrap gap-4">
+                    <Button variant="orange" size="lg">
+                      Security Whitepaper
+                      <ChevronRight className="w-4 h-4 ml-2" />
+                    </Button>
+                    <Button variant="outline" size="lg">
+                      Request Audit Report
+                    </Button>
+                  </div>
+                </div>
+                <div className="relative h-[300px] lg:h-[350px]">
+                  <div className="absolute -inset-4 bg-gradient-to-r from-orange/20 via-azure/10 to-transparent rounded-3xl blur-xl" />
+                  <SecurityHeroAnimation className="relative z-10" />
                 </div>
               </div>
             </ScrollReveal>

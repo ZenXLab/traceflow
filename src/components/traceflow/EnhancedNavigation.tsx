@@ -65,8 +65,8 @@ export function EnhancedNavigation() {
             <Crown className="absolute -top-2 -right-2 w-4 h-4 text-accent animate-bounce-subtle" />
           </div>
           <div className="flex flex-col">
-            <span className="text-xl font-bold gradient-text leading-none">TRACEFLOW</span>
-            <span className="text-[10px] text-muted-foreground leading-none">by CropXon</span>
+            <span className="text-xl font-bold gradient-text leading-none uppercase tracking-wide">TRACEFLOW</span>
+            <span className="text-[10px] text-muted-foreground leading-none uppercase tracking-wider">BY CROPXON</span>
           </div>
         </a>
 

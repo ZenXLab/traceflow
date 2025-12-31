@@ -5,6 +5,7 @@ import { ScrollProgress } from "@/components/traceflow/ScrollProgress";
 import { ScrollReveal } from "@/components/traceflow/ScrollReveal";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { IntelligenceHeroAnimation } from "@/components/traceflow/FeatureHeroAnimations";
 import { 
   Brain, Sparkles, FileText, GitBranch, Route, Eye, ArrowLeft, 
   Check, Zap, ChevronRight, TrendingUp, Target, Bot
@@ -77,27 +78,33 @@ export default function IntelligenceFeatures() {
             </Link>
 
             <ScrollReveal direction="up">
-              <div className="max-w-4xl">
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-aqua to-aqua/70 text-primary-foreground text-sm font-bold mb-6">
-                  <Brain className="w-4 h-4" />
-                  Intelligence Platform
-                </span>
-                <h1 className="text-4xl lg:text-6xl font-bold mb-6">
-                  AI-Powered <span className="gradient-text">Digital Intelligence</span>
-                </h1>
-                <p className="text-xl text-muted-foreground mb-8 max-w-2xl">
-                  Eight specialized AI agents working in concert to analyze, understand, and optimize every aspect of your digital experience.
-                </p>
-                <div className="flex flex-wrap gap-4">
-                  <Button variant="aqua" size="lg">
-                    Explore PROXIMA AI
-                    <ChevronRight className="w-4 h-4 ml-2" />
-                  </Button>
-                  <Link to="/agents">
-                    <Button variant="outline" size="lg">
-                      Meet the Agents
+              <div className="grid lg:grid-cols-2 gap-12 items-center">
+                <div className="max-w-xl">
+                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-aqua to-aqua/70 text-primary-foreground text-sm font-bold mb-6">
+                    <Brain className="w-4 h-4" />
+                    Intelligence Platform
+                  </span>
+                  <h1 className="text-4xl lg:text-5xl font-bold mb-6">
+                    AI-Powered <span className="gradient-text">Digital Intelligence</span>
+                  </h1>
+                  <p className="text-xl text-muted-foreground mb-8">
+                    Eight specialized AI agents working in concert to analyze, understand, and optimize every aspect of your digital experience.
+                  </p>
+                  <div className="flex flex-wrap gap-4">
+                    <Button variant="aqua" size="lg">
+                      Explore PROXIMA AI
+                      <ChevronRight className="w-4 h-4 ml-2" />
                     </Button>
-                  </Link>
+                    <Link to="/agents">
+                      <Button variant="outline" size="lg">
+                        Meet the Agents
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+                <div className="relative h-[300px] lg:h-[350px]">
+                  <div className="absolute -inset-4 bg-gradient-to-r from-aqua/20 via-azure/10 to-transparent rounded-3xl blur-xl" />
+                  <IntelligenceHeroAnimation className="relative z-10" />
                 </div>
               </div>
             </ScrollReveal>

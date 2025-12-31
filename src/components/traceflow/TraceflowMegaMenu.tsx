@@ -136,24 +136,29 @@ export function TraceflowMegaMenu({ isOpen, onClose }: TraceflowMegaMenuProps) {
                 </div>
 
                 {/* Category Items */}
-                <div className="space-y-1">
+                <div className="space-y-1 relative z-20">
                   {category.items.map((item, itemIndex) => (
                     <Link
                       key={item.label}
                       to={item.href}
                       className={cn(
                         "flex items-start gap-3 p-3 rounded-xl transition-all duration-300",
-                        "hover:bg-muted/50 group",
-                        "animate-fade-in-up"
+                        "hover:bg-muted/50 group cursor-pointer",
+                        "animate-fade-in-up",
+                        "relative z-10"
                       )}
                       style={{ animationDelay: `${(categoryIndex * 50) + (itemIndex * 30)}ms` }}
-                      onClick={onClose}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onClose();
+                      }}
                     >
                       <item.icon className={cn(
                         "w-4 h-4 mt-0.5 text-muted-foreground",
-                        "group-hover:text-aqua transition-colors duration-300"
+                        "group-hover:text-aqua transition-colors duration-300",
+                        "pointer-events-none"
                       )} />
-                      <div>
+                      <div className="pointer-events-none">
                         <div className="text-sm font-medium text-foreground group-hover:text-aqua transition-colors">
                           {item.label}
                         </div>

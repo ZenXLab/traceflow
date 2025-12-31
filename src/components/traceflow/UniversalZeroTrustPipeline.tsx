@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Cloud, Building2, Shield, Wifi, WifiOff, ArrowDown, Check, X, AlertTriangle } from "lucide-react";
+import deploymentModelsImage from "@/assets/traceflow-deployment-models.png";
 
 const deploymentModes = [
   { 
@@ -128,6 +129,42 @@ const getModeSpecificConfig = (mode: string) => {
   }
 };
 
+// Animated Data Particles Component
+function DataFlowParticles() {
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden hidden lg:block">
+      {/* Multiple particle streams */}
+      {[...Array(8)].map((_, i) => (
+        <div
+          key={i}
+          className="absolute w-3 h-3 rounded-full"
+          style={{
+            background: `linear-gradient(135deg, hsl(var(--azure)), hsl(var(--aqua)))`,
+            boxShadow: `0 0 10px hsl(var(--azure)), 0 0 20px hsl(var(--aqua) / 0.5)`,
+            top: '50%',
+            left: '0%',
+            animation: `flowParticleHorizontal 4s ease-in-out ${i * 0.5}s infinite`,
+          }}
+        />
+      ))}
+      {/* Secondary particles with different timing */}
+      {[...Array(6)].map((_, i) => (
+        <div
+          key={`secondary-${i}`}
+          className="absolute w-2 h-2 rounded-full"
+          style={{
+            background: `hsl(var(--orange))`,
+            boxShadow: `0 0 8px hsl(var(--orange))`,
+            top: '50%',
+            left: '0%',
+            animation: `flowParticleHorizontal 3.5s ease-in-out ${i * 0.7 + 0.3}s infinite`,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 export function UniversalZeroTrustPipeline() {
   const [activeMode, setActiveMode] = useState("saas");
   const [activeStage, setActiveStage] = useState<string | null>(null);
@@ -162,6 +199,18 @@ export function UniversalZeroTrustPipeline() {
           <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
             No matter where TRACEFLOW runs, the logical lifecycle is immutable. This sequence is never reordered. No deployment mode bypasses stages.
           </p>
+        </div>
+
+        {/* Blueprint Image */}
+        <div className="relative mb-12 rounded-2xl overflow-hidden glass border border-border/50">
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10" />
+          <img 
+            src={deploymentModelsImage} 
+            alt="The Traceflow Blueprint: One Pipeline, Any Environment - Four Deployment Models showing SaaS-First, Hybrid, On-Prem, and Air-Gapped options with the immutable lifecycle" 
+            className="w-full h-auto object-cover"
+          />
+          {/* Overlay to hide watermark area */}
+          <div className="absolute bottom-0 right-0 w-32 h-8 bg-gradient-to-l from-background via-background to-transparent z-20" />
         </div>
 
         {/* Deployment Mode Toggle */}
@@ -201,10 +250,24 @@ export function UniversalZeroTrustPipeline() {
           
           {/* Pipeline Stages */}
           <div className="relative">
-            {/* Connection Lines */}
-            <div className="absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-azure via-aqua to-orange opacity-30 hidden lg:block" style={{ transform: 'translateY(-50%)' }} />
+            {/* Connection Lines with Animated Particles */}
+            <div className="absolute top-1/2 left-[8%] right-[8%] h-2 -translate-y-1/2 hidden lg:block">
+              <div className="h-full bg-gradient-to-r from-azure/30 via-aqua/30 to-orange/30 rounded-full relative overflow-hidden">
+                {/* Animated gradient overlay */}
+                <div 
+                  className="absolute inset-0 bg-gradient-to-r from-azure via-aqua to-orange rounded-full"
+                  style={{ 
+                    animation: 'shimmerFlow 3s linear infinite',
+                    backgroundSize: '200% 100%'
+                  }} 
+                />
+              </div>
+            </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6">
+            {/* Data Flow Particles */}
+            <DataFlowParticles />
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6 relative z-10">
               {pipelineStages.map((stage, idx) => (
                 <div 
                   key={stage.id}
@@ -213,7 +276,7 @@ export function UniversalZeroTrustPipeline() {
                   onMouseLeave={() => setActiveStage(null)}
                 >
                   {/* Arrow connector (mobile) */}
-                  {idx < pipelineStages.length - 1 && (
+                  {idx < pipelineStages.length - 1 && idx > 0 && (
                     <div className="flex justify-center py-2 lg:hidden">
                       <ArrowDown className="w-5 h-5 text-muted-foreground animate-bounce" />
                     </div>
@@ -282,16 +345,23 @@ export function UniversalZeroTrustPipeline() {
                     )} />
                   </div>
                   
-                  {/* Arrow connector (desktop) */}
+                  {/* Arrow connector with particle effect (desktop) */}
                   {idx < pipelineStages.length - 1 && (
-                    <div className="hidden lg:flex absolute -right-3 top-1/2 -translate-y-1/2 z-10">
+                    <div className="hidden lg:flex absolute -right-3 top-1/2 -translate-y-1/2 z-20">
                       <div className={cn(
-                        "w-6 h-6 rounded-full flex items-center justify-center",
+                        "w-6 h-6 rounded-full flex items-center justify-center relative",
                         stage.color === "azure" && "bg-azure",
                         stage.color === "aqua" && "bg-aqua",
                         stage.color === "orange" && "bg-orange"
                       )}>
                         <ArrowDown className="w-3 h-3 text-primary-foreground rotate-[-90deg]" />
+                        {/* Pulse effect */}
+                        <div className={cn(
+                          "absolute inset-0 rounded-full animate-ping",
+                          stage.color === "azure" && "bg-azure/50",
+                          stage.color === "aqua" && "bg-aqua/50",
+                          stage.color === "orange" && "bg-orange/50"
+                        )} style={{ animationDuration: '2s' }} />
                       </div>
                     </div>
                   )}
@@ -497,9 +567,30 @@ export function UniversalZeroTrustPipeline() {
       </div>
       
       <style>{`
-        @keyframes flowPulse {
-          0%, 100% { opacity: 0.5; transform: scale(1); }
-          50% { opacity: 1; transform: scale(1.1); }
+        @keyframes flowParticleHorizontal {
+          0% { 
+            left: 0%; 
+            opacity: 0;
+            transform: translateY(-50%) scale(0.5);
+          }
+          10% { 
+            opacity: 1;
+            transform: translateY(-50%) scale(1);
+          }
+          90% { 
+            opacity: 1;
+            transform: translateY(-50%) scale(1);
+          }
+          100% { 
+            left: 100%; 
+            opacity: 0;
+            transform: translateY(-50%) scale(0.5);
+          }
+        }
+        
+        @keyframes shimmerFlow {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
         }
       `}</style>
     </section>
