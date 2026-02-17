@@ -4,26 +4,26 @@ const footerLinks = {
   Product: [
     { label: "Features", href: "#features" },
     { label: "Pricing", href: "#pricing" },
-    { label: "Security", href: "#" },
-    { label: "Enterprise", href: "#" },
+    { label: "Security", href: "/features/security" },
+    { label: "Enterprise", href: "/features/enterprise" },
   ],
   Resources: [
-    { label: "Documentation", href: "#" },
-    { label: "API Reference", href: "#" },
+    { label: "Documentation", href: "/docs" },
+    { label: "API Reference", href: "/api-reference" },
     { label: "Case Studies", href: "#case-studies" },
-    { label: "Blog", href: "#" },
+    { label: "Blog", href: "/blog" },
   ],
   Company: [
     { label: "About Us", href: "/about" },
-    { label: "Careers", href: "#" },
+    { label: "Careers", href: "/careers" },
     { label: "Contact", href: "#contact" },
-    { label: "Partners", href: "#" },
+    { label: "Partners", href: "/partners" },
   ],
   Legal: [
-    { label: "Privacy Policy", href: "#" },
-    { label: "Terms of Service", href: "#" },
-    { label: "Cookie Policy", href: "#" },
-    { label: "DPA", href: "#" },
+    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Terms of Service", href: "/terms" },
+    { label: "Cookie Policy", href: "/cookies" },
+    { label: "DPA", href: "/dpa" },
   ],
 };
 
@@ -44,7 +44,7 @@ export function Footer() {
         <div className="grid lg:grid-cols-5 gap-12 lg:gap-8">
           {/* Brand Column */}
           <div className="lg:col-span-1">
-            <a href="#" className="flex items-center gap-2 mb-6">
+            <a href="/" className="flex items-center gap-2 mb-6">
               <div className="relative">
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-azure to-aqua flex items-center justify-center">
                   <span className="text-primary-foreground font-bold text-lg">T</span>
