@@ -66,7 +66,7 @@ export function EnhancedNavigation() {
           </div>
           <div className="flex flex-col">
             <span className="text-xl font-bold gradient-text leading-none uppercase tracking-wide">TRACEFLOW</span>
-            <span className="text-[10px] text-muted-foreground leading-none uppercase tracking-wider">BY CROPXON</span>
+            <span className="text-[10px] text-muted-foreground leading-none uppercase tracking-wider">BY ORIGINX LABS</span>
           </div>
         </a>
 

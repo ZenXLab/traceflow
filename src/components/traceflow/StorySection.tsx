@@ -140,7 +140,7 @@ export function StorySection() {
               </div>
               <div className="text-left">
                 <div className="font-bold text-foreground">TRACEFLOW Team</div>
-                <div className="text-sm text-muted-foreground">CropXon ATLAS</div>
+                <div className="text-sm text-muted-foreground">OriginX Labs</div>
               </div>
             </div>
           </div>

@@ -57,7 +57,7 @@ export function Footer() {
               The World's First Digital Cognition Infrastructure. Every Signal. One Intelligence.
             </p>
             <div className="text-sm text-muted-foreground">
-              <span className="font-medium text-foreground">by CropXon ATLAS</span>
+              <span className="font-medium text-foreground">by OriginX Labs</span>
             </div>
           </div>
 
@@ -84,7 +84,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="mt-16 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} TRACEFLOW by CropXon ATLAS. All rights reserved.
+            © {new Date().getFullYear()} TRACEFLOW by OriginX Labs Pvt. Ltd. All rights reserved.
           </p>
 
           {/* Social Links */}
