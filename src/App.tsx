@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/hooks/use-theme";
 import Index from "./pages/Index";
 import AgentProfiles from "./pages/AgentProfiles";
+import About from "./pages/About";
 import CaptureFeatures from "./pages/features/CaptureFeatures";
 import IntelligenceFeatures from "./pages/features/IntelligenceFeatures";
 import SecurityFeatures from "./pages/features/SecurityFeatures";
@@ -24,6 +25,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/agents" element={<AgentProfiles />} />
+            <Route path="/about" element={<About />} />
             <Route path="/features/capture" element={<CaptureFeatures />} />
             <Route path="/features/intelligence" element={<IntelligenceFeatures />} />
             <Route path="/features/security" element={<SecurityFeatures />} />
