@@ -23,7 +23,8 @@ export function EnhancedNavigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
-  const megaMenuTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const megaMenuTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { theme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
