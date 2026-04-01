@@ -641,7 +641,7 @@ export function VideoDemoSection() {
               <div className="flex-1 flex justify-center">
                 <div className="px-4 py-1 rounded-lg bg-muted/50 text-xs text-muted-foreground font-mono flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-aqua animate-pulse" />
-                  app.traceflow.io/dashboard
+                  app.traceflowhq.com/dashboard
                 </div>
               </div>
               {/* Live stats */}

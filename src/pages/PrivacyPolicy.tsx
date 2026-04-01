@@ -9,9 +9,9 @@ const sections = [
   { title: "2. How We Use Your Information", content: "We use collected information to provide, maintain, and improve TRACEFLOW services; to process transactions; to send service-related communications; to detect and prevent fraud; and to comply with legal obligations. We never sell personal data to third parties." },
   { title: "3. Data Security", content: "TRACEFLOW employs enterprise-grade security including AES-256 encryption at rest, TLS 1.3 in transit, Zero-Trust PII tokenization, SOC 2 Type II compliance, and regular penetration testing. Our infrastructure supports air-gapped deployments for maximum security." },
   { title: "4. Data Retention", content: "We retain personal data only as long as necessary for the purposes outlined in this policy. Session data retention is configurable per client (30-365 days). Upon account termination, all data is securely deleted within 90 days." },
-  { title: "5. Your Rights", content: "You have the right to access, correct, delete, or port your personal data. You may also object to processing or request restriction. For GDPR, CCPA, and other regional privacy rights, contact our Data Protection Officer at privacy@traceflow.io." },
+  { title: "5. Your Rights", content: "You have the right to access, correct, delete, or port your personal data. You may also object to processing or request restriction. For GDPR, CCPA, and other regional privacy rights, contact our Data Protection Officer at privacy@traceflowhq.com." },
   { title: "6. International Transfers", content: "TRACEFLOW supports data residency in multiple regions (US, EU, APAC, India). Enterprise customers can configure data to remain within specific geographic boundaries. All cross-border transfers comply with applicable data protection frameworks." },
-  { title: "7. Contact", content: "For privacy-related inquiries, contact OriginX Labs Pvt. Ltd. at privacy@traceflow.io. Our Data Protection Officer can be reached at dpo@traceflow.io." },
+  { title: "7. Contact", content: "For privacy-related inquiries, contact OriginX Labs Pvt. Ltd. at privacy@traceflowhq.com. Our Data Protection Officer can be reached at dpo@traceflowhq.com." },
 ];
 
 const PrivacyPolicy = () => {
