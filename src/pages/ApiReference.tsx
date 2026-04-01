@@ -52,7 +52,7 @@ const ApiReference = () => {
           <ScrollReveal direction="up" duration={600}>
             <div className="p-6 rounded-2xl border border-border bg-card">
               <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">Base URL</h3>
-              <code className="text-lg font-mono text-azure">https://api.traceflow.io/v1</code>
+              <code className="text-lg font-mono text-azure">https://api.traceflowhq.com/v1</code>
               <div className="flex items-center gap-4 mt-4 text-sm text-muted-foreground">
                 <span className="flex items-center gap-1"><Lock className="w-3.5 h-3.5" /> TLS 1.3</span>
                 <span className="flex items-center gap-1"><Globe className="w-3.5 h-3.5" /> Global CDN</span>

@@ -149,8 +149,9 @@ export function EnhancedNavigation() {
       {/* Mobile Menu */}
       <div
         className={cn(
-          "lg:hidden fixed inset-x-0 top-full bg-background/98 backdrop-blur-2xl border-b border-border transition-all duration-500 overflow-hidden",
-          isMobileMenuOpen ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0"
+          "lg:hidden fixed inset-x-0 bg-background/98 backdrop-blur-2xl border-b border-border transition-all duration-500 overflow-y-auto",
+          isScrolled ? "top-[56px]" : "top-[72px]",
+          isMobileMenuOpen ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0 pointer-events-none"
         )}
       >
         <nav className="container-wide py-6 px-4 flex flex-col gap-2">
