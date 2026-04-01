@@ -59,7 +59,7 @@ const contactCards = [
 
 const officeInfo = [
   { icon: MapPin, label: "Headquarters", value: "India" },
-  { icon: Mail, label: "Email", value: "hello@traceflow.io" },
+  { icon: Mail, label: "Email", value: "hello@traceflowhq.com" },
   { icon: Clock, label: "Response Time", value: "Within 24 hours" },
   { icon: Globe, label: "Global Support", value: "24/7 Available" },
 ];
