@@ -1,4 +1,7 @@
-import { Crown, Twitter, Linkedin, Github, Youtube } from "lucide-react";
+import { Twitter, Linkedin, Github, Youtube } from "lucide-react";
+import { useTheme } from "@/hooks/use-theme";
+import traceflowLogoColor from "@/assets/traceflow-logo-color.png";
+import traceflowLogoDark from "@/assets/traceflow-logo-dark.png";
 
 const footerLinks = {
   Product: [
