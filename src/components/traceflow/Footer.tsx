@@ -38,6 +38,7 @@ const socialLinks = [
 ];
 
 export function Footer() {
+  const { theme } = useTheme();
   return (
     <footer id="contact" className="relative overflow-hidden border-t border-border">
       {/* Background */}
@@ -48,12 +49,11 @@ export function Footer() {
           {/* Brand Column */}
           <div className="lg:col-span-1">
             <a href="/" className="flex items-center gap-2 mb-6">
-              <div className="relative">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-azure to-aqua flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-lg">T</span>
-                </div>
-                <Crown className="absolute -top-2 -right-2 w-4 h-4 text-accent" />
-              </div>
+              <img 
+                src={theme === 'light' ? traceflowLogoDark : traceflowLogoColor} 
+                alt="TRACEFLOW Logo" 
+                className="w-10 h-10 object-contain"
+              />
               <span className="text-xl font-bold gradient-text">TRACEFLOW</span>
             </a>
             <p className="text-sm text-muted-foreground mb-6">
