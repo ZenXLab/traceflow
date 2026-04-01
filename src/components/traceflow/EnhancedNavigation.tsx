@@ -5,6 +5,9 @@ import { cn } from "@/lib/utils";
 import { TraceflowMegaMenu } from "./TraceflowMegaMenu";
 import { ThemeToggle } from "./ThemeToggle";
 import { ContactFormModal } from "./ContactFormModal";
+import { useTheme } from "@/hooks/use-theme";
+import traceflowLogoColor from "@/assets/traceflow-logo-color.png";
+import traceflowLogoDark from "@/assets/traceflow-logo-dark.png";
 
 const navLinks = [
   { label: "Features", href: "#features", hasMegaMenu: true },
