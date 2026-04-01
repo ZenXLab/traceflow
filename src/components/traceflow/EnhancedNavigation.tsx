@@ -58,15 +58,13 @@ export function EnhancedNavigation() {
     >
       <div className="container-wide flex items-center justify-between px-4 lg:px-8">
         {/* Logo */}
-        <a href="#" className="flex items-center gap-2 group">
+        <a href="/" className="flex items-center gap-2 group">
           <div className="relative">
-            <div className={cn(
-              "w-10 h-10 rounded-lg bg-gradient-to-br from-azure to-aqua flex items-center justify-center transition-all duration-300",
-              "group-hover:shadow-[0_0_20px_hsl(var(--azure)/0.5)]"
-            )}>
-              <span className="text-primary-foreground font-bold text-lg">T</span>
-            </div>
-            <Crown className="absolute -top-2 -right-2 w-4 h-4 text-accent animate-bounce-subtle" />
+            <img 
+              src={theme === 'light' ? traceflowLogoDark : traceflowLogoColor} 
+              alt="TRACEFLOW Logo" 
+              className="w-10 h-10 object-contain transition-all duration-300 group-hover:scale-110"
+            />
           </div>
           <div className="flex flex-col">
             <span className="text-xl font-bold gradient-text leading-none uppercase tracking-wide">TRACEFLOW</span>
