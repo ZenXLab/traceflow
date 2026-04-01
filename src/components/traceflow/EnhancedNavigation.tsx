@@ -16,7 +16,7 @@ const navLinks = [
   { label: "PROXIMA AI", href: "#proxima" },
   { label: "Security", href: "#security" },
   { label: "Pricing", href: "#pricing" },
-  { label: "Contact", href: "#contact" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export function EnhancedNavigation() {
